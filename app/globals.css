@@ -1,0 +1,378 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: oklch(0.99 0.002 240);
+  --foreground: oklch(0.18 0.01 260);
+  --card: oklch(1 0 0 / 0.7);
+  --card-foreground: oklch(0.18 0.01 260);
+  --popover: oklch(1 0 0 / 0.9);
+  --popover-foreground: oklch(0.18 0.01 260);
+  --primary: oklch(0.65 0.22 145);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.55 0.18 240);
+  --secondary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.96 0.005 240);
+  --muted-foreground: oklch(0.45 0.02 260);
+  --accent: oklch(0.78 0.15 85);
+  --accent-foreground: oklch(0.18 0.01 260);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.01 240 / 0.5);
+  --input: oklch(0.96 0.005 240);
+  --ring: oklch(0.65 0.22 145);
+  --chart-1: oklch(0.65 0.22 145);
+  --chart-2: oklch(0.55 0.18 240);
+  --chart-3: oklch(0.78 0.15 85);
+  --chart-4: oklch(0.70 0.20 160);
+  --chart-5: oklch(0.60 0.15 200);
+  --radius: 1rem;
+  --sidebar: oklch(0.99 0.002 240);
+  --sidebar-foreground: oklch(0.18 0.01 260);
+  --sidebar-primary: oklch(0.65 0.22 145);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0.005 240);
+  --sidebar-accent-foreground: oklch(0.18 0.01 260);
+  --sidebar-border: oklch(0.92 0.01 240 / 0.5);
+  --sidebar-ring: oklch(0.65 0.22 145);
+
+  /* Energy theme custom properties */
+  --energy-green: oklch(0.65 0.22 145);
+  --energy-blue: oklch(0.55 0.18 240);
+  --energy-gold: oklch(0.78 0.15 85);
+  --glass: oklch(1 0 0 / 0.6);
+  --glass-border: oklch(1 0 0 / 0.3);
+  --glow-green: oklch(0.65 0.22 145 / 0.4);
+  --glow-blue: oklch(0.55 0.18 240 / 0.3);
+}
+
+.dark {
+  --background: oklch(0.12 0.01 260);
+  --foreground: oklch(0.96 0.005 240);
+  --card: oklch(0.16 0.01 260 / 0.8);
+  --card-foreground: oklch(0.96 0.005 240);
+  --popover: oklch(0.16 0.01 260 / 0.95);
+  --popover-foreground: oklch(0.96 0.005 240);
+  --primary: oklch(0.70 0.22 145);
+  --primary-foreground: oklch(0.12 0.01 260);
+  --secondary: oklch(0.60 0.18 240);
+  --secondary-foreground: oklch(0.96 0.005 240);
+  --muted: oklch(0.22 0.01 260);
+  --muted-foreground: oklch(0.65 0.02 240);
+  --accent: oklch(0.80 0.15 85);
+  --accent-foreground: oklch(0.12 0.01 260);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.28 0.01 260 / 0.5);
+  --input: oklch(0.22 0.01 260);
+  --ring: oklch(0.70 0.22 145);
+  --chart-1: oklch(0.70 0.22 145);
+  --chart-2: oklch(0.60 0.18 240);
+  --chart-3: oklch(0.80 0.15 85);
+  --chart-4: oklch(0.75 0.20 160);
+  --chart-5: oklch(0.65 0.15 200);
+  --sidebar: oklch(0.14 0.01 260);
+  --sidebar-foreground: oklch(0.96 0.005 240);
+  --sidebar-primary: oklch(0.70 0.22 145);
+  --sidebar-primary-foreground: oklch(0.12 0.01 260);
+  --sidebar-accent: oklch(0.22 0.01 260);
+  --sidebar-accent-foreground: oklch(0.96 0.005 240);
+  --sidebar-border: oklch(0.28 0.01 260 / 0.5);
+  --sidebar-ring: oklch(0.70 0.22 145);
+
+  --energy-green: oklch(0.70 0.22 145);
+  --energy-blue: oklch(0.60 0.18 240);
+  --energy-gold: oklch(0.80 0.15 85);
+  --glass: oklch(0.16 0.01 260 / 0.6);
+  --glass-border: oklch(0.28 0.01 260 / 0.3);
+  --glow-green: oklch(0.70 0.22 145 / 0.5);
+  --glow-blue: oklch(0.60 0.18 240 / 0.4);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Mono Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 16px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-energy-green: var(--energy-green);
+  --color-energy-blue: var(--energy-blue);
+  --color-energy-gold: var(--energy-gold);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-glow-green: var(--glow-green);
+  --color-glow-blue: var(--glow-blue);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+.glass-strong {
+  background: oklch(1 0 0 / 0.8);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid oklch(1 0 0 / 0.4);
+}
+
+/* Energy glow effects */
+.glow-green {
+  box-shadow: 0 0 40px var(--glow-green), 0 0 80px var(--glow-green);
+}
+
+.glow-blue {
+  box-shadow: 0 0 40px var(--glow-blue), 0 0 80px var(--glow-blue);
+}
+
+.glow-gold {
+  box-shadow: 0 0 40px oklch(0.78 0.15 85 / 0.3), 0 0 80px oklch(0.78 0.15 85 / 0.2);
+}
+
+/* Micro shadow utilities */
+.shadow-micro {
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 2px 4px oklch(0 0 0 / 0.02);
+}
+
+.shadow-soft {
+  box-shadow: 0 4px 20px oklch(0 0 0 / 0.06), 0 2px 8px oklch(0 0 0 / 0.04);
+}
+
+.shadow-elevated {
+  box-shadow: 0 8px 40px oklch(0 0 0 / 0.08), 0 4px 16px oklch(0 0 0 / 0.04);
+}
+
+/* Energy flow animation */
+@keyframes energy-flow {
+  0% {
+    stroke-dashoffset: 100;
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes particle-float {
+
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+
+  25% {
+    transform: translate(10px, -20px) scale(1.1);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translate(-5px, -40px) scale(0.9);
+    opacity: 0.4;
+  }
+
+  75% {
+    transform: translate(15px, -20px) scale(1.05);
+    opacity: 0.5;
+  }
+}
+
+.animate-energy-flow {
+  animation: energy-flow 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, oklch(1 0 0 / 0.4) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 30s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.6s ease-out forwards;
+}
+
+.animate-particle {
+  animation: particle-float 8s ease-in-out infinite;
+}
+
+/* Smooth transitions */
+.transition-premium {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-micro {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Text gradient */
+.text-gradient-energy {
+  background: linear-gradient(135deg, var(--energy-green) 0%, var(--energy-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Perspective utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}

@@ -1,0 +1,6 @@
+git
+github.com/Vlados8/EP-Web-3.0
+hosted: railway
+
+api-url: https://admin.empire-premium.de/api/v1
+api-password: ep_71089631cd09ba8d4fe00f726af56ed90aa23c5eb0988647
