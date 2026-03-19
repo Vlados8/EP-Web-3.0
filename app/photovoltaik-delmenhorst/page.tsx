@@ -86,34 +86,37 @@ export default function PhotovoltaikDelmenhorstPage() {
       <section className="py-24 bg-slate-900 text-white overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center lg:text-left">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter">Wärmepumpe mit Photovoltaik Delmenhorst</h2>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter line-height-[1.1]">
+                Photovoltaik mit Wärmepumpe Delmenhorst
+              </h2>
               <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist die effizienteste Art, Ihr Gebäude in Delmenhorst nachhaltig und kostengünstig zu beheizen.
+                Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist der effizienteste Weg, Ihr Gebäude in Delmenhorst autark und nachhaltig zu bewirtschaften.
               </p>
-              <div className="flex flex-wrap justify-center lg:justify-start gap-3">
-                {["Maximaler Eigenverbrauch", "Zukunftsweisende Technik", "Regionale Förderung"].map((tag, i) => (
-                  <div key={i} className="px-4 py-2 rounded-full bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-widest text-primary">
-                    {tag}
-                  </div>
-                ))}
-              </div>
-              <Button asChild size="lg" className="mt-10 rounded-full px-12 py-8 text-xl font-bold bg-primary text-white hover:bg-white hover:text-slate-900 transition-all shadow-glow">
-                <a href="/#calculator">Handeln Sie jetzt</a>
+              <Button asChild variant="ghost" className="rounded-full border border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
+                <a href="#faq">Mehr erfahren</a>
               </Button>
             </div>
             <div className="relative">
-              <div className="glass-strong p-16 rounded-[60px] border border-white/10 relative z-10">
-                <div className="w-20 h-20 rounded-[28px] bg-primary/20 flex items-center justify-center mb-8 mx-auto lg:mx-0">
-                  <Sun className="w-10 h-10 text-primary" />
+              <div className="glass-strong p-8 rounded-[40px] border border-white/10 relative">
+                <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 blur-3xl rounded-full" />
+                <img 
+                  src="/logo.png" 
+                  alt="Empire Premium Bau" 
+                  className="h-8 mb-8 brightness-0 opacity-80" 
+                />
+                <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter text-slate-900">Echte Qualität</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-8 italic">
+                  Höchste Standards für Photovoltaik in Delmenhorst. Wir verbauen nur, was wir selbst nutzen würden.
+                </p>
+                <div className="space-y-3">
+                  {["Premium Module", "Smart Monitoring", "Speicher-Upgrades", "Expert-Service"].map((t, i) => (
+                    <div key={i} className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-primary">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      {t}
+                    </div>
+                  ))}
                 </div>
-                <h3 className="text-2xl font-black mb-4 uppercase italic tracking-tighter">Ihre Stromrechnung</h3>
-                <div className="flex items-end gap-3 mb-8 justify-center lg:justify-start">
-                  <span className="text-4xl font-black text-slate-500 line-through">150€</span>
-                  <span className="text-6xl font-black text-primary">0€</span>
-                  <span className="text-xs font-black uppercase tracking-widest text-slate-400 pb-2">/ mtl.</span>
-                </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-30">Savings Simulation Delmenhorst</span>
               </div>
             </div>
           </div>
@@ -144,18 +147,18 @@ export default function PhotovoltaikDelmenhorstPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 md:px-12">
+      <section className="py-24 px-6 relative overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-900 text-white rounded-[70px] p-12 md:p-24 text-center relative overflow-hidden border border-white/5 shadow-elevated transition-transform hover:scale-[1.01]">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-7xl font-black mb-10 relative z-10 italic uppercase tracking-tighter leading-none">
-              Starten Sie <br /> Heute
+          <div className="bg-primary text-white rounded-[40px] md:rounded-[48px] p-8 md:p-24 text-center relative overflow-hidden shadow-elevated">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            <h2 className="text-3xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
+              Ihr Weg zur Solaranlage
             </h2>
-            <p className="text-slate-400 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
-              Sichern Sie sich jetzt Ihre persönliche Beratung für **Photovoltaik Delmenhorst**. Wir sind für Sie da.
+            <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
+              Starten Sie jetzt Ihre Energiewende in Delmenhorst. Nutzen Sie unseren intelligenten Rechner für ein schnelles Angebot.
             </p>
-            <Button asChild size="lg" className="rounded-full px-16 py-10 text-2xl font-black bg-primary text-white hover:bg-white hover:text-slate-900 relative z-10 shadow-glow uppercase transition-all">
-              <a href="/#calculator">Unverbindlich anfragen</a>
+            <Button asChild size="lg" variant="secondary" className="rounded-full px-8 py-6 md:px-12 md:py-9 text-xl md:text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase w-full sm:w-auto">
+              <a href="/#calculator">Jetzt berechnen</a>
             </Button>
           </div>
         </div>

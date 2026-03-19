@@ -93,10 +93,10 @@ export default function PhotovoltaikOldenburgPage() {
                 <img 
                   src="/logo.png" 
                   alt="Empire Premium Bau" 
-                  className="h-8 mb-8 brightness-0 invert opacity-50" 
+                  className="h-8 mb-8 brightness-0 opacity-80" 
                 />
-                <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter">Premium Qualität</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-8 italic">
+                <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter text-slate-900">Premium Qualität</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-8 italic">
                   Wir verbauen ausschließlich Hochleistungs-Module und intelligente Speicherlösungen für Ihr Oldenburger Zuhause.
                 </p>
                 <div className="space-y-3">
@@ -116,7 +116,7 @@ export default function PhotovoltaikOldenburgPage() {
               <p className="text-slate-400 text-lg mb-8 leading-relaxed">
                 Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist der effizienteste Weg, Ihr Gebäude in Oldenburg autark und nachhaltig zu bewirtschaften.
               </p>
-              <Button asChild variant="outline" className="rounded-full border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
+              <Button asChild variant="ghost" className="rounded-full border border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
                 <a href="#faq">Mehr erfahren</a>
               </Button>
             </div>
@@ -150,15 +150,15 @@ export default function PhotovoltaikOldenburgPage() {
       {/* Final CTA */}
       <section className="py-24 px-6 relative overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-primary text-white rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-elevated">
+          <div className="bg-primary text-white rounded-[40px] md:rounded-[48px] p-8 md:p-24 text-center relative overflow-hidden shadow-elevated">
             <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
+            <h2 className="text-3xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
               Ihr Weg zur Solaranlage
             </h2>
             <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
               Starten Sie jetzt Ihre Energiewende in Oldenburg. Nutzen Sie unseren intelligenten Rechner für ein schnelles Angebot.
             </p>
-            <Button asChild size="lg" variant="secondary" className="rounded-full px-12 py-9 text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase">
+            <Button asChild size="lg" variant="secondary" className="rounded-full px-8 py-6 md:px-12 md:py-9 text-xl md:text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase w-full sm:w-auto">
               <a href="/#calculator">Jetzt berechnen</a>
             </Button>
           </div>

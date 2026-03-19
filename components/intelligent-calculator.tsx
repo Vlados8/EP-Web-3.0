@@ -202,7 +202,7 @@ function ResultPanel({ status, onReset }: {
       animate={{ opacity: 1, scale: 1 }}
       className="text-center py-16 flex flex-col items-center justify-center min-h-[450px]"
     >
-      <motion.div 
+      <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ type: "spring", damping: 15, stiffness: 200, delay: 0.2 }}
@@ -220,8 +220,8 @@ function ResultPanel({ status, onReset }: {
           <RefreshCw className="w-10 h-10 text-red-600 stroke-[3px] animate-spin relative z-10" />
         )}
       </motion.div>
-      
-      <motion.h3 
+
+      <motion.h3
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
@@ -229,25 +229,25 @@ function ResultPanel({ status, onReset }: {
       >
         {status.success ? "Anfrage gesendet!" : "Fehler"}
       </motion.h3>
-      
-      <motion.p 
+
+      <motion.p
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
         className="text-lg text-slate-500 font-medium mb-12 max-w-lg mx-auto leading-relaxed"
       >
-        {status.success 
-          ? "Vielen Dank für Ihr Vertrauen. Ein Experte von Empire Premium wird Ihre Daten prüfen und sich innerhalb von 24 Stunden bei Ihnen melden." 
+        {status.success
+          ? "Vielen Dank für Ihr Vertrauen. Ein Experte von Empire Premium wird Ihre Daten prüfen und sich innerhalb von 24 Stunden bei Ihnen melden."
           : status.message}
       </motion.p>
-      
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.6 }}
       >
-        <Button 
-          onClick={onReset} 
+        <Button
+          onClick={onReset}
           className="bg-[#0f172a] hover:bg-[#1e293b] text-white rounded-xl px-12 py-7 h-auto text-lg font-bold shadow-lg transition-all hover:scale-105 active:scale-95"
         >
           Schließen
@@ -264,55 +264,55 @@ function ContactStep({ info, onChange }: {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Name / Firma *</label>
+        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Name / Firma *</label>
         <input
           type="text"
           value={info.name}
           onChange={(e) => onChange("name", e.target.value)}
           placeholder="Max Mustermann"
-          className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg"
+          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">E-Mail Adresse *</label>
+          <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">E-Mail Adresse *</label>
           <input
             type="email"
             value={info.email}
             onChange={(e) => onChange("email", e.target.value)}
             placeholder="max@beispiel.de"
-            className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg"
+            className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
           />
         </div>
         <div className="space-y-2">
-          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Telefonnummer *</label>
+          <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Telefonnummer *</label>
           <input
             type="tel"
             value={info.phone}
             onChange={(e) => onChange("phone", e.target.value)}
             placeholder="0123 456789"
-            className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg"
+            className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
           />
         </div>
       </div>
       <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Wohnort / PLZ *</label>
+        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Wohnort / PLZ *</label>
         <input
           type="text"
           value={info.zip}
           onChange={(e) => onChange("zip", e.target.value)}
           placeholder="12345 Berlin"
-          className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg"
+          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
         />
       </div>
       <div className="space-y-2">
-        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider ml-1">Nachricht / Notizen</label>
+        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Nachricht / Notizen</label>
         <textarea
           value={info.notes}
           onChange={(e) => onChange("notes", e.target.value)}
           placeholder="Haben Sie spezielle Wünsche?"
           rows={4}
-          className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg resize-none"
+          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 resize-none"
         />
       </div>
     </div>
@@ -591,7 +591,7 @@ export function IntelligentCalculator() {
 
   function handleManualNext(q: ApiQuestion) {
     setHistory((prev) => [...prev, { view: "question", qId: q.id }])
-    
+
     const sortedQs = [...(currentSubcategory?.questions || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
     const currentIndex = sortedQs.findIndex(qx => qx.id === q.id)
     if (currentIndex > -1 && currentIndex < sortedQs.length - 1) {
@@ -753,13 +753,15 @@ export function IntelligentCalculator() {
                   </div>
                 ) : (
                   categories.slice(0, 2).map((cat, idx) => (
-                    <motion.div
+                    <motion.button
                       key={cat.id}
+                      onClick={() => handleCategorySelect(cat)}
                       whileHover={{
-                        y: -12,
-                        boxShadow: "0 30px 60px -12px rgba(0,0,0,0.2), 0 18px 36px -18px rgba(0,0,0,0.25), 0 0 40px rgba(59,130,246,0.05)"
+                        y: -8,
+                        boxShadow: "0 20px 50px -12px rgba(0,0,0,0.3), 0 0 30px rgba(59,130,246,0.1)"
                       }}
-                      className="group relative flex flex-col items-center bg-white p-12 rounded-[1.75rem] shadow-[0_15px_35px_-5px_rgba(0,0,0,0.1),0_0_20px_rgba(0,0,0,0.02)] border border-slate-200 transition-all duration-500 hover:border-primary/20"
+                      whileTap={{ scale: 0.98 }}
+                      className="group relative flex flex-col items-center bg-white p-12 rounded-3xl shadow-[0_10px_40px_0px_rgba(0,0,0,0.25),0_0_20px_rgba(59,130,246,0.03)] border border-slate-100 transition-all duration-500 hover:border-primary/20 overflow-hidden w-full"
                     >
                       <div className="w-24 h-24 rounded-2xl bg-slate-50 border border-slate-100 mb-8 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
                         {idx === 0
@@ -770,17 +772,13 @@ export function IntelligentCalculator() {
 
                       <h3 className="text-3xl font-extrabold text-[#0f172a] mb-12 tracking-tight">{cat.name}</h3>
 
-                      <button
-                        onClick={() => handleCategorySelect(cat)}
-                        className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg hover:bg-primary hover:text-white transition-all duration-300 flex items-center justify-center gap-2 group/btn shadow-sm"
+                      <div
+                        className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                       >
                         Starten
-                        <ChevronRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
-                      </button>
-
-                      {/* Subtle edge highlight for "intelligent" look */}
-                      <div className="absolute inset-0 rounded-[1.75rem] border border-white/40 pointer-events-none shadow-[inset_0_1px_1px_rgba(255,255,255,1)]" />
-                    </motion.div>
+                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      </div>
+                    </motion.button>
                   ))
                 )}
               </motion.div>
@@ -828,13 +826,13 @@ export function IntelligentCalculator() {
                             <motion.button
                               key={sub.id}
                               onClick={() => handleSubcategorySelect(sub)}
-                              whileHover={{ 
-                                y: -12, 
+                              whileHover={{
+                                y: -12,
                                 scale: 1.02,
                                 boxShadow: "0 30px 60px -12px rgba(0,0,0,0.2), 0 18px 36px -18px rgba(0,0,0,0.25), 0 0 40px rgba(59,130,246,0.05)"
                               }}
                               whileTap={{ scale: 0.98 }}
-                              className="flex flex-col items-start text-left p-8 rounded-[2rem] bg-white border border-slate-100 hover:border-primary/50 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.08),0_0_20px_rgba(59,130,246,0.02)] transition-all duration-500 gap-6 group"
+                              className="flex flex-col items-start text-left p-10 rounded-3xl bg-white border border-slate-100 hover:border-primary/40 shadow-[0_10px_40px_0px_rgba(0,0,0,0.25),0_0_20px_rgba(59,130,246,0.03)] hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.3),0_0_35px_rgba(59,130,246,0.1)] transition-all duration-500 gap-8 group relative overflow-hidden"
                             >
                               <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-primary/10 transition-colors duration-300">
                                 <LayoutGrid className="w-8 h-8 text-[#0f172a] group-hover:text-primary transition-colors" />
@@ -886,7 +884,7 @@ export function IntelligentCalculator() {
                                 }
                               }}
                               disabled={
-                                (currentQuestion.type === "checkbox" || currentQuestion.type === "multi") 
+                                (currentQuestion.type === "checkbox" || currentQuestion.type === "multi")
                                   ? !answers[currentQuestion.id]?.checkedIds?.length
                                   : !answers[currentQuestion.id]?.value
                               }

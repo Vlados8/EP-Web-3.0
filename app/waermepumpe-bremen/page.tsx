@@ -71,15 +71,15 @@ export default function WaermepumpeBremenPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="glass-strong p-12 rounded-[40px] border border-white/10 relative z-10">
+              <div className="glass-strong p-12 rounded-[40px] border border-white/10 relative z-10 transition-premium hover:shadow-2xl">
                 <div className="flex justify-between mb-8">
                   <Thermometer className="w-12 h-12 text-secondary" />
                   <Zap className="w-12 h-12 text-primary" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 italic">Die Komplettlösung</h3>
-                <p className="text-slate-400 text-sm italic mb-8">Wir installieren Solar und Wärmepumpe als perfekt aufeinander abgestimmtes System.</p>
-                <div className="h-40 w-full rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
-                  <span className="text-xs font-black uppercase tracking-[0.5em] opacity-30">Smart Energy Flow</span>
+                <h3 className="text-2xl font-bold mb-4 italic text-slate-900">Die Komplettlösung</h3>
+                <p className="text-slate-600 text-sm italic mb-8 font-medium">Wir installieren Solar und Wärmepumpe als perfekt aufeinander abgestimmtes System.</p>
+                <div className="h-40 w-full rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center border border-slate-900/5">
+                  <span className="text-xs font-black uppercase tracking-[0.5em] opacity-30 text-slate-900">Smart Energy Flow</span>
                 </div>
               </div>
             </div>
@@ -159,17 +159,16 @@ export default function WaermepumpeBremenPage() {
 
       {/* Final CTA */}
       <section className="py-24 px-6 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-secondary text-white rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-elevated">
-            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
-              Jetzt Energieautark werden
+        <div className="max-w-5xl mx-auto">
+          <div className="bg-secondary text-white rounded-[40px] md:rounded-[70px] p-8 md:p-32 text-center relative overflow-hidden shadow-elevated transition-transform hover:scale-[1.01]">
+            <h2 className="text-3xl md:text-7xl font-black mb-10 relative z-10 italic uppercase tracking-tighter leading-none">
+              Modern Heizen <br /> in Bremen
             </h2>
             <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
-              Starten Sie jetzt mit Ihrer persönlichen **Solar und Wärmepumpe Komplettlösung**. Wir beraten Sie kompetent und herstellerunabhängig.
+              Starten Sie jetzt mit Ihrer persönlichen **Wärmepumpe Bremen**. Unser Expertenteam berät Sie kompetent und herstellerunabhängig.
             </p>
-            <Button asChild size="lg" variant="secondary" className="rounded-full px-12 py-9 text-2xl font-black bg-white text-secondary hover:bg-slate-50 relative z-10 shadow-glow uppercase">
-              <a href="/#calculator">Handeln Sie jetzt</a>
+            <Button asChild size="lg" className="rounded-full px-8 py-6 md:px-14 md:py-10 text-xl md:text-2xl font-black bg-white text-secondary hover:bg-slate-900 hover:text-white relative z-10 shadow-glow uppercase transition-all w-full sm:w-auto">
+              <a href="/#calculator">Unverbindlich anfragen</a>
             </Button>
           </div>
         </div>

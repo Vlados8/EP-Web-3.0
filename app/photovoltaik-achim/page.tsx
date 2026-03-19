@@ -87,14 +87,19 @@ export default function PhotovoltaikAchimPage() {
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="order-2 lg:order-1">
-              <div className="glass-strong p-12 rounded-[40px] border border-white/10 relative">
+              <div className="glass-strong p-8 rounded-[40px] border border-white/10 relative">
                 <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 blur-3xl rounded-full" />
-                <h3 className="text-2xl font-black mb-4 italic uppercase tracking-tighter">Solar & Wärmepumpe</h3>
-                <p className="text-slate-400 text-sm leading-relaxed mb-8 italic">
-                  Die perfekte Kombination für Ihr Haus in Achim. Nutzen Sie selbsterzeugten Strom für effiziente Wärme.
+                <img 
+                  src="/logo.png" 
+                  alt="Empire Premium Bau" 
+                  className="h-8 mb-8 brightness-0 opacity-80" 
+                />
+                <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter text-slate-900">Premium Qualität</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-8 italic">
+                  Wir verbauen ausschließlich Hochleistungs-Module und intelligente Speicherlösungen für Ihr Zuhause in Achim.
                 </p>
                 <div className="space-y-3">
-                  {["Glas-Glas Module", "Intelligente Steuerung", "Notstrom-Option"].map((t, i) => (
+                  {["Glas-Glas Module", "Smart-Meter Integration", "Notstrom-Option", "App-Steuerung"].map((t, i) => (
                     <div key={i} className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-primary">
                       <div className="w-1.5 h-1.5 rounded-full bg-primary" />
                       {t}
@@ -104,13 +109,13 @@ export default function PhotovoltaikAchimPage() {
               </div>
             </div>
             <div className="order-1 lg:order-2">
-              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter leading-tight">
+              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter line-height-[1.1]">
                 Photovoltaik mit Wärmepumpe Achim
               </h2>
               <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                Maximaler Komfort bei minimalen Kosten. Wir installieren Ihre **Solaranlage Achim** in perfekter Abstimmung mit modernster Heiztechnik.
+                Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist der effizienteste Weg, Ihr Gebäude in Achim autark und nachhaltig zu bewirtschaften.
               </p>
-              <Button asChild variant="outline" className="rounded-full border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
+              <Button asChild variant="ghost" className="rounded-full border border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
                 <a href="#faq">Mehr erfahren</a>
               </Button>
             </div>
@@ -144,15 +149,16 @@ export default function PhotovoltaikAchimPage() {
       {/* Final CTA */}
       <section className="py-24 px-6 relative overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-primary text-white rounded-[48px] p-12 md:p-24 text-center relative overflow-hidden shadow-elevated">
-            <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
-              Starten Sie Jetzt in Achim
+          <div className="bg-primary text-white rounded-[40px] md:rounded-[48px] p-8 md:p-24 text-center relative overflow-hidden shadow-elevated">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            <h2 className="text-3xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
+              Ihr Weg zur Solaranlage
             </h2>
             <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
-              Werden Sie unabhängig von steigenden Energiepreisen. Nutzen Sie unsere Expertise für Ihre **Photovoltaik Achim**.
+              Starten Sie jetzt Ihre Energiewende in Achim. Nutzen Sie unseren intelligenten Rechner für ein schnelles Angebot.
             </p>
-            <Button asChild size="lg" variant="secondary" className="rounded-full px-12 py-9 text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase">
-              <a href="/#calculator">Handeln Sie jetzt</a>
+            <Button asChild size="lg" variant="secondary" className="rounded-full px-8 py-6 md:px-12 md:py-9 text-xl md:text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase w-full sm:w-auto">
+              <a href="/#calculator">Jetzt berechnen</a>
             </Button>
           </div>
         </div>

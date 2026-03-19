@@ -48,85 +48,132 @@ function AnimatedChart() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   const maxCumulative = Math.max(...savingsData.map(d => d.cumulative))
+  const chartHeight = 280
+  const chartWidth = 600 // Base width for calculation
+
+  // Generate SVG Path for Area and Line
+  const points = savingsData.map((data, i) => {
+    const x = (i / (savingsData.length - 1)) * 100
+    const y = 100 - (data.cumulative / maxCumulative) * 100
+    return { x, y }
+  })
+
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x}% ${p.y}%`).join(' ')
+  const areaPath = `${linePath} L 100% 100% L 0% 100% Z`
 
   return (
-    <div ref={ref} className="relative h-80 w-full">
+    <div ref={ref} className="relative h-80 w-full group/chart">
       {/* Y-axis labels */}
-      <div className="absolute left-0 top-0 bottom-8 w-16 flex flex-col justify-between text-xs text-muted-foreground">
+      <div className="absolute left-0 top-0 bottom-8 w-16 flex flex-col justify-between text-[10px] font-black text-slate-400 uppercase tracking-tighter">
         <span>{(maxCumulative / 1000).toFixed(0)}k €</span>
         <span>{(maxCumulative / 2000).toFixed(0)}k €</span>
         <span>0 €</span>
       </div>
 
       {/* Chart area */}
-      <div className="absolute left-20 right-0 top-0 bottom-0">
+      <div className="absolute left-16 right-4 top-0 bottom-8">
         {/* Grid lines */}
-        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none">
+        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
           {[0, 1, 2].map((_, i) => (
-            <div key={i} className="border-t border-border/30" />
+            <div key={i} className="border-t border-slate-300" />
           ))}
         </div>
 
-        {/* Bars */}
-        <div className="absolute inset-x-0 bottom-8 top-0 flex items-end justify-around gap-2 px-2">
-          {savingsData.map((data, index) => {
-            const height = (data.cumulative / maxCumulative) * 100
+        {/* SVG Chart */}
+        <div className="absolute inset-0 pt-4 overflow-visible">
+          <svg width="100%" height="100%" preserveAspectRatio="none" className="overflow-visible">
+            <defs>
+              <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
+                <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            
+            {/* Area Fill */}
+            <motion.path
+              d={areaPath}
+              fill="url(#areaGradient)"
+              initial={{ opacity: 0, pathLength: 0 }}
+              animate={isInView ? { opacity: 1, pathLength: 1 } : {}}
+              transition={{ duration: 1.5, ease: "easeOut" }}
+            />
+            
+            {/* Main Line */}
+            <motion.path
+              d={linePath}
+              fill="none"
+              stroke="var(--primary)"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={isInView ? { pathLength: 1 } : {}}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          </svg>
 
-            return (
-              <motion.div
+          {/* Data Points (Dots) */}
+          <div className="absolute inset-0">
+            {points.map((p, index) => (
+              <div
                 key={index}
-                className="relative flex-1 flex flex-col items-center"
+                className="absolute w-4 h-4 -ml-2 -mt-2 cursor-pointer z-20"
+                style={{ left: `${p.x}%`, top: `${p.y}%` }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
               >
-                {/* Bar */}
                 <motion.div
-                  className="relative w-full rounded-t-lg bg-gradient-to-t from-primary to-primary/70 cursor-pointer overflow-hidden group"
-                  initial={{ height: 0 }}
-                  animate={isInView ? { height: `${height}%` } : {}}
-                  transition={{ duration: 0.8, delay: index * 0.1, ease: [0.4, 0, 0.2, 1] }}
-                >
-                  {/* Shimmer effect */}
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    initial={{ x: "-100%" }}
-                    animate={isInView ? { x: "100%" } : {}}
-                    transition={{ duration: 1, delay: index * 0.1 + 0.5 }}
-                  />
-                  
-                  {/* Glow on hover */}
-                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </motion.div>
-
-                {/* Tooltip */}
+                  className="w-full h-full rounded-full bg-white border-4 border-primary shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                  initial={{ scale: 0 }}
+                  animate={isInView ? { scale: 1 } : {}}
+                  transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                  whileHover={{ scale: 1.5, backgroundColor: "var(--primary)" }}
+                />
+                
+                {/* Tooltip Linkage (Vertical Line) */}
                 <AnimatePresence>
                   {hoveredIndex === index && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute bottom-full mb-2 glass rounded-xl px-3 py-2 shadow-elevated z-10 whitespace-nowrap"
-                    >
-                      <div className="text-sm font-semibold text-foreground">
-                        {data.cumulative.toLocaleString()} €
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        Gesamteinsparung
-                      </div>
-                    </motion.div>
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 0.3, height: `${100 - p.y}%` }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="absolute top-full left-1/2 -translate-x-1/2 w-px bg-primary pointer-events-none"
+                    />
                   )}
                 </AnimatePresence>
+              </div>
+            ))}
+          </div>
+        </div>
 
-                {/* X-axis label */}
-                <div className="absolute -bottom-6 text-xs text-muted-foreground whitespace-nowrap">
-                  {data.year}
-                </div>
-              </motion.div>
-            )
-          })}
+        {/* X-axis labels */}
+        <div className="absolute -bottom-8 left-0 right-0 flex justify-between px-0">
+          {savingsData.map((data, index) => (
+            <div key={index} className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">
+              {data.year}
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Tooltip Overlay */}
+      <AnimatePresence>
+        {hoveredIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            className="absolute top-4 right-4 glass rounded-2xl p-4 shadow-elevated z-30 border border-primary/20 backdrop-blur-xl"
+          >
+            <div className="text-2xl font-black text-primary mb-0.5">
+              {savingsData[hoveredIndex].cumulative.toLocaleString()} €
+            </div>
+            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+              Gesamteinsparung ({savingsData[hoveredIndex].year})
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

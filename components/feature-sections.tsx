@@ -573,7 +573,8 @@ function InverterTabVisualization() {
         <text x="252" y="145" fill="#64748b" fontSize="8">AC OUT</text>
         <g transform="translate(150,150)">
           <motion.circle r="8" fill="none" stroke="#3b82f6" strokeWidth="2"
-            animate={{ rotate: 360 }}
+            initial={{ rotate: 0 }}
+            animate={{ rotate: [0, 360] }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
         </g>
       </svg>
@@ -791,7 +792,8 @@ function InverterVisualization() {
 
         <g transform="translate(150, 150)">
           <motion.circle r="8" fill="none" stroke="#3b82f6" strokeWidth="2"
-            animate={{ rotate: 360 }}
+            initial={{ rotate: 0 }}
+            animate={{ rotate: [0, 360] }}
             transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
         </g>
       </svg>
@@ -1337,8 +1339,9 @@ function OutdoorUnitVisualization() {
 
           {/* Rotating fan blades - Bosch curved design */}
           <motion.g
-            animate={{ rotate: 360 }}
-            transition={{ duration: 1.6, repeat: Infinity, ease: "linear" }}
+            initial={{ rotate: 0 }}
+            animate={{ rotate: [0, 360] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
           >
             {Array.from({ length: 4 }).map((_, i) => (
               <path

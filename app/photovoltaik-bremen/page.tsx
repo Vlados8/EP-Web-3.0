@@ -68,29 +68,44 @@ export default function PhotovoltaikBremenPage() {
                 ))}
               </ul>
             </motion.div>
-            <div className="grid grid-cols-2 gap-4 translate-y-8">
-              <div className="space-y-4 pt-12">
-                <div className="glass-strong p-8 rounded-3xl shadow-soft">
-                  <Sun className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-bold mb-2">Solar Bremen</h3>
-                  <p className="text-xs text-slate-500 uppercase tracking-widest font-black">Effizienz</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:translate-y-8">
+              <div className="space-y-6 md:pt-12">
+                <div className="glass-strong p-8 rounded-[40px] border border-white/10 relative">
+                  <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 blur-3xl rounded-full" />
+                  <img 
+                    src="/logo.png" 
+                    alt="Empire Premium Bau" 
+                    className="h-8 mb-8 brightness-0 opacity-80" 
+                  />
+                  <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter text-slate-900 leading-none">Spitzenleistung</h3>
+                  <p className="text-slate-600 text-sm leading-relaxed mb-8 italic font-medium">
+                    Zertifizierte Solarlösungen für Bremen. Wir setzen auf Langlebigkeit und höchste Effizienzgrade.
+                  </p>
+                  <div className="space-y-3">
+                    {["Tier-1 Komponenten", "Ertrags-Garantie", "Wartungs-Service", "Sofort-Montage"].map((t, i) => (
+                      <div key={i} className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-primary">
+                        <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                        {t}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="glass-strong p-8 rounded-3xl shadow-soft">
+                <div className="glass-strong p-8 rounded-[32px] shadow-soft border border-white/10">
                   <Zap className="w-10 h-10 text-secondary mb-4" />
-                  <h3 className="font-bold mb-2 uppercase tracking-tighter">Speicher</h3>
-                  <p className="text-xs text-slate-500 italic">Strom nutzen, wenn Sie ihn brauchen.</p>
+                  <h3 className="font-bold mb-2 uppercase tracking-tighter text-slate-900">Speicher</h3>
+                  <p className="text-xs text-slate-600 italic font-medium">Strom nutzen, wenn Sie ihn brauchen.</p>
                 </div>
               </div>
-              <div className="space-y-4">
-                <div className="glass-strong p-8 rounded-3xl shadow-soft">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-6 md:space-y-6">
+                <div className="glass-strong p-8 rounded-[32px] shadow-soft border border-white/10">
                   <Thermometer className="w-10 h-10 text-accent mb-4" />
-                  <h3 className="font-bold mb-2">Wärme</h3>
-                  <p className="text-xs text-slate-500 font-medium">Nachhaltig heizen.</p>
+                  <h3 className="font-bold mb-2 text-slate-900">Wärme</h3>
+                  <p className="text-xs text-slate-600 font-medium italic">Nachhaltig heizen.</p>
                 </div>
-                <div className="glass-strong p-8 rounded-3xl shadow-soft">
+                <div className="glass-strong p-8 rounded-[32px] shadow-soft border border-white/10">
                   <ShieldCheck className="w-10 h-10 text-primary mb-4" />
-                  <h3 className="font-bold mb-2 uppercase tracking-widest">Service</h3>
-                  <p className="text-xs text-slate-500">Volle Wartung.</p>
+                  <h3 className="font-bold mb-2 uppercase tracking-widest text-slate-900">Service</h3>
+                  <p className="text-xs text-slate-600 font-medium italic">Volle Wartung.</p>
                 </div>
               </div>
             </div>
@@ -172,16 +187,18 @@ export default function PhotovoltaikBremenPage() {
       <section className="py-20 relative px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-[#020617] text-white rounded-[32px] p-12 md:p-20 text-center relative overflow-hidden shadow-elevated border border-white/5">
-            <div className="absolute inset-0 bg-primary/5 blur-[100px] pointer-events-none translate-y-1/2" />
-            <h2 className="text-3xl md:text-5xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
-              Bereit für Ihre Energiewende in Bremen?
-            </h2>
-            <p className="text-slate-400 text-lg mb-12 relative z-10 max-w-2xl mx-auto">
-              Lassen Sie uns gemeinsam berechnen, wie viel Sie mit einer Solaranlage sparen können. Kontaktieren Sie uns noch heute für ein unverbindliches Angebot.
-            </p>
-            <Button asChild size="lg" className="rounded-full px-12 py-8 text-xl font-bold bg-primary text-white hover:bg-primary/90 relative z-10 shadow-glow">
-              <a href="/#calculator">Handeln Sie jetzt</a>
-            </Button>
+            <div className="absolute inset-0 bg-primary/5 blur-[100px] pointer-events-none" />
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter line-height-[1.1]">
+                Photovoltaik mit Wärmepumpe Bremen
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist der effizienteste Weg, Ihr Gebäude in Bremen autark und nachhaltig zu bewirtschaften.
+              </p>
+              <Button asChild variant="ghost" className="rounded-full border border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
+                <a href="#faq">Mehr erfahren</a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>

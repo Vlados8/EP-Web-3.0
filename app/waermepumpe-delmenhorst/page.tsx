@@ -51,14 +51,18 @@ export default function WaermepumpeDelmenhorstPage() {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="relative">
               <div className="glass-strong p-16 rounded-[60px] border border-white/10 relative z-10">
-                <div className="flex justify-between mb-8">
-                  <Wind className="w-16 h-16 text-secondary" />
-                  <Thermometer className="w-16 h-16 text-primary" />
-                </div>
-                <h3 className="text-2xl font-black mb-4 uppercase italic tracking-tighter">Intelligentes Heizen</h3>
-                <p className="text-slate-400 text-sm italic mb-8 italic">Leise, leistungsstark und perfekt abgestimmt auf Ihr Zuhause in Delmenhorst.</p>
-                <div className="h-40 w-full rounded-3xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center border border-white/5">
-                  <span className="text-[10px] font-black uppercase tracking-[0.8em] opacity-30">Pure Sustainability</span>
+                <div className="glass-strong p-12 rounded-[48px] border border-white/10 relative z-10 transition-premium hover:shadow-2xl">
+                  <Wind className="w-16 h-16 text-secondary mb-8" />
+                  <h3 className="text-2xl font-black mb-4 uppercase italic tracking-tighter text-slate-900">Robuste Klimatechnik</h3>
+                  <p className="text-slate-600 text-sm italic mb-8 font-medium">Unsere Systeme sind für die spezifischen Anforderungen in Delmenhorst und dem Oldenburger Land konzipiert.</p>
+                  <div className="grid grid-cols-2 gap-4">
+                    {["Hocheffizient", "Smart Control", "Leise Betrieb", "Eco-Mode"].map((t, i) => (
+                      <div key={i} className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/5 border border-slate-900/10 text-[10px] font-black uppercase tracking-widest text-slate-700">
+                        <div className="w-1.5 h-1.5 rounded-full bg-secondary shadow-glow" />
+                        {t}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -135,16 +139,15 @@ export default function WaermepumpeDelmenhorstPage() {
       {/* Final Call */}
       <section className="py-24 px-6 relative overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-900 text-white rounded-[80px] p-12 md:p-32 text-center relative overflow-hidden shadow-elevated transition-premium hover:scale-[1.01]">
-            <div className="absolute inset-0 bg-gradient-to-br from-secondary/15 to-transparent pointer-events-none" />
-            <h2 className="text-4xl md:text-7xl font-black mb-10 relative z-10 italic uppercase tracking-tighter leading-none">
-              Starten Sie <br /> Jetzt
+          <div className="bg-secondary text-white rounded-[40px] md:rounded-[70px] p-8 md:p-32 text-center relative overflow-hidden shadow-elevated transition-transform hover:scale-[1.01]">
+            <h2 className="text-3xl md:text-7xl font-black mb-10 relative z-10 italic uppercase tracking-tighter leading-none">
+              Modern Heizen <br /> in Delmenhorst
             </h2>
-            <p className="text-white/60 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
-              Wechseln Sie zum Heizen der Zukunft mit Ihrer persönlichen **Wärmepumpe Delmenhorst**. Unser Team ist bereit.
+            <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
+              Starten Sie jetzt mit Ihrer persönlichen **Wärmepumpe Delmenhorst**. Unser Expertenteam berät Sie kompetent und herstellerunabhängig.
             </p>
-            <Button asChild size="lg" className="rounded-full px-16 py-10 text-2xl font-black bg-secondary text-white hover:bg-white hover:text-slate-900 relative z-10 shadow-glow uppercase transition-all">
-              <a href="/#calculator">Kostenlose Anfrage</a>
+            <Button asChild size="lg" className="rounded-full px-8 py-6 md:px-14 md:py-10 text-xl md:text-2xl font-black bg-white text-secondary hover:bg-slate-900 hover:text-white relative z-10 shadow-glow uppercase transition-all w-full sm:w-auto">
+              <a href="/#calculator">Unverbindlich anfragen</a>
             </Button>
           </div>
         </div>

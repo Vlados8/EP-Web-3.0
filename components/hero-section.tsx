@@ -41,8 +41,8 @@ export function HeroSection() {
   })
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95])
+  const opacity = useTransform(scrollYProgress, [0.4, 0.9], [1, 0])
+  const scale = useTransform(scrollYProgress, [0.4, 0.9], [1, 0.95])
 
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
@@ -109,16 +109,16 @@ export function HeroSection() {
         style={{ y, scale }}
       >
         {/* Text content */}
-        <div className="text-center lg:text-left">
+        <div className="text-center lg:text-left order-2 lg:order-1 relative">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass shadow-micro mb-8 border border-primary/20"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass shadow-premium mb-10 border border-primary/30 bg-primary/5"
           >
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            <Sparkles className="w-3 h-3 text-primary animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em]">
               Region Norddeutschland / Bremen + 100 km
             </span>
           </motion.div>
@@ -128,13 +128,17 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter text-foreground leading-[1.1] text-balance italic uppercase"
+            className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-foreground leading-[0.95] text-balance italic uppercase"
           >
-            Photovoltaik & Wärmepumpen – <br />
-            <span className="text-gradient-energy italic">
-              Ihre Energiezukunft
+            Photovoltaik & <br />
+            Wärmepumpen – <br />
+            <span className="relative inline-block mt-2">
+              <span className="text-gradient-energy italic drop-shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+                Ihre Energiezukunft
+              </span>
+              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent rounded-full opacity-50 block lg:hidden" />
             </span> <br />
-            beginnt hier
+            <span className="text-foreground/90">beginnt hier</span>
           </motion.h1>
 
           {/* Description */}
@@ -142,10 +146,10 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 text-pretty font-medium"
+            className="mt-8 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 text-pretty font-medium border-l-2 border-primary/20 pl-6 lg:border-l-0 lg:pl-0"
           >
             Wir bieten professionelle Installation von Photovoltaikanlagen und Wärmepumpen für Privat- und Gewerbekunden in Norddeutschland. 
-            Als erfahrenes Unternehmen aus der Region Bremen realisieren wir moderne Energielösungen im Umkreis von 100 km – effizient, nachhaltig und individuell auf Ihre Bedürfnisse abgestimmt.
+            Regionale Expertise trifft auf modernste Technik – für ein nachhaltiges Zuhause.
           </motion.p>
 
           {/* CTA buttons */}
@@ -153,12 +157,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
+            className="mt-12 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
           >
             <Button 
               asChild
               size="lg"
-              className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-8 py-6 text-base font-medium shadow-elevated group w-full sm:w-auto"
+              className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-10 py-7 text-base font-black uppercase tracking-widest shadow-premium group w-full sm:w-auto"
             >
               <a href="#calculator">
                 <span className="relative z-10">Kostenloses Angebot</span>
@@ -174,13 +178,13 @@ export function HeroSection() {
             <Button 
               variant="ghost"
               size="lg"
-              className="rounded-full px-8 py-6 text-base font-medium group w-full sm:w-auto"
+              className="rounded-full px-8 py-7 text-base font-bold group w-full sm:w-auto border border-foreground/5 hover:border-foreground/20"
             >
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-primary/10 transition-colors">
-                  <Play className="w-4 h-4 ml-0.5" />
+                <div className="w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-primary/20 transition-all border border-white/10 group-hover:scale-110">
+                  <Play className="w-4 h-4 ml-0.5 fill-current" />
                 </div>
-                <span>Video ansehen</span>
+                <span className="uppercase tracking-widest text-xs">Video ansehen</span>
               </div>
             </Button>
           </motion.div>
@@ -190,16 +194,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-16 grid grid-cols-3 gap-8"
+            className="mt-20 grid grid-cols-3 gap-4 sm:gap-8"
           >
             {[
-              { value: "98%", label: "Effizienz" },
-              { value: "15k+", label: "Installationen" },
-              { value: "25J", label: "Garantie" },
+              { value: "98%", label: "Effizienz", color: "text-primary" },
+              { value: "15k+", label: "Kunden", color: "text-secondary" },
+              { value: "25J", label: "Garantie", color: "text-accent" },
             ].map((stat, index) => (
-              <div key={index} className="text-center lg:text-left">
-                <div className="text-3xl font-semibold text-foreground">{stat.value}</div>
-                <div className="text-sm text-muted-foreground mt-1">{stat.label}</div>
+              <div key={index} className="text-center lg:text-left group cursor-default">
+                <div className={`text-2xl sm:text-4xl font-black tracking-tighter ${stat.color} drop-shadow-sm`}>{stat.value}</div>
+                <div className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-muted-foreground/60 mt-1 group-hover:text-foreground transition-colors">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -207,7 +211,7 @@ export function HeroSection() {
 
         {/* 3D House */}
         <motion.div
-          className="relative h-[500px] lg:h-[600px]"
+          className="relative h-[400px] sm:h-[500px] lg:h-[600px] order-1 lg:order-2"
           style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
         >
           <EnergyHouse3D />

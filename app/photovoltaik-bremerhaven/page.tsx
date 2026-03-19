@@ -87,29 +87,38 @@ export default function PhotovoltaikBremerhavenPage() {
         <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_70%_50%,rgba(59,130,246,0.1),transparent)] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter">Wärmepumpe mit Photovoltaik Bremerhaven</h2>
+            <div className="order-1 lg:order-2">
+              <h2 className="text-3xl md:text-5xl font-black mb-8 italic uppercase tracking-tighter line-height-[1.1]">
+                Photovoltaik mit Wärmepumpe Bremerhaven
+              </h2>
               <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-                Kombinieren Sie Ihre Solaranlage mit einer hocheffizienten Wärmepumpe. Diese **Hybridlösung** wandelt selbsterzeugten Strom direkt in Wärme um – der smarteste Weg zur Autarkie in Bremerhaven.
+                Kombinieren Sie Ihre Solaranlage mit einer modernen Wärmepumpe. Diese **Hybridlösung** ist der effizienteste Weg, Ihr Gebäude in Bremerhaven autark und nachhaltig zu bewirtschaften.
               </p>
-              <ul className="space-y-4 mb-10">
-                {["Senkung der Energiekosten um bis zu 80%", "Unabhängigkeit von fossilen Brennstoffen", "Zukunftssichere Heiztechnik für Bremerhaven"].map((point, i) => (
-                  <div key={i} className="flex items-center gap-4 text-slate-300 font-medium">
-                    <CheckCircle2 className="w-5 h-5 text-primary" />
-                    {point}
-                  </div>
-                ))}
-              </ul>
-              <Button asChild size="lg" className="rounded-full px-10 py-8 text-xl font-bold bg-white text-slate-900 hover:bg-primary hover:text-white transition-premium shadow-glow">
-                <a href="/#calculator">Jetzt planen</a>
+              <Button asChild variant="ghost" className="rounded-full border border-white/20 text-white hover:bg-white hover:text-slate-900 px-8 py-6 font-bold uppercase tracking-widest text-xs">
+                <a href="#faq">Mehr erfahren</a>
               </Button>
             </div>
             <div className="relative">
-              <div className="glass-strong p-12 rounded-[40px] border border-white/10 relative z-10 text-center">
-                <BarChart3 className="w-16 h-16 text-primary mx-auto mb-6" />
-                <h3 className="text-2xl font-black mb-4 uppercase italic">Ihre Rendite</h3>
-                <p className="text-slate-400 text-sm italic mb-8">Wir berechnen das maximale Sparpotenzial Ihrer Solaranlage Bremerhaven.</p>
-                <div className="h-1 bg-white/10 rounded-full mb-8 relative overflow-hidden">
+              <div className="glass-strong p-8 rounded-[40px] border border-white/10 relative z-10 text-center">
+                <div className="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 blur-3xl rounded-full" />
+                <img 
+                  src="/logo.png" 
+                  alt="Empire Premium Bau" 
+                  className="h-8 mb-8 brightness-0 opacity-80 mx-auto" 
+                />
+                <h3 className="text-2xl font-bold mb-4 italic uppercase tracking-tighter text-slate-900 line-height-none">Hafen-Resistenz</h3>
+                <p className="text-slate-600 text-sm leading-relaxed mb-8 italic font-medium">
+                  Spezielle Montagesysteme für die Seestadt – windfest, korrosionsbeständig und langlebig.
+                </p>
+                <div className="space-y-3 text-left max-w-[240px] mx-auto mb-8">
+                  {["Küsten-Technik", "Sturmfest-Garantie", "Salznebel-Schutz", "Smart-Integration"].map((t, i) => (
+                    <div key={i} className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-primary">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                      {t}
+                    </div>
+                  ))}
+                </div>
+                <div className="h-1 bg-slate-900/10 rounded-full relative overflow-hidden">
                   <motion.div 
                     className="absolute inset-0 bg-primary"
                     initial={{ scaleX: 0 }}
@@ -117,7 +126,6 @@ export default function PhotovoltaikBremerhavenPage() {
                     transition={{ duration: 1.5, ease: "easeOut" }}
                   />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-[0.5em] opacity-40">Coastal Efficiency Analysis</span>
               </div>
             </div>
           </div>
@@ -148,18 +156,18 @@ export default function PhotovoltaikBremerhavenPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6">
+      <section className="py-24 px-6 relative overflow-hidden">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-900 text-white rounded-[60px] p-12 md:p-24 text-center relative overflow-hidden shadow-elevated border border-white/5">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] rounded-full" />
-            <h2 className="text-4xl md:text-6xl font-black mb-8 relative z-10 italic uppercase tracking-tighter">
-              Bringen Sie die Sonne an Bord
+          <div className="bg-primary text-white rounded-[40px] md:rounded-[48px] p-8 md:p-24 text-center relative overflow-hidden shadow-elevated">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+            <h2 className="text-3xl md:text-6xl font-black mb-8 relative z-10 uppercase tracking-tighter italic">
+              Ihr Weg zur Solaranlage
             </h2>
-            <p className="text-slate-400 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
-              Sichern Sie sich jetzt Ihr kostenfreies Konzept für Ihre **Photovoltaik Bremerhaven**. Unser Expertenteam berät Sie unverbindlich.
+            <p className="text-white/80 text-lg mb-12 relative z-10 max-w-2xl mx-auto font-medium">
+              Starten Sie jetzt Ihre Energiewende in Bremerhaven. Nutzen Sie unseren intelligenten Rechner für ein schnelles Angebot.
             </p>
-            <Button asChild size="lg" className="rounded-full px-12 py-9 text-2xl font-black bg-primary text-white hover:bg-white hover:text-slate-900 relative z-10 shadow-glow uppercase transition-premium">
-              <a href="/#calculator">Handeln Sie jetzt</a>
+            <Button asChild size="lg" variant="secondary" className="rounded-full px-8 py-6 md:px-12 md:py-9 text-xl md:text-2xl font-black bg-white text-primary hover:bg-slate-50 relative z-10 shadow-glow uppercase w-full sm:w-auto">
+              <a href="/#calculator">Jetzt berechnen</a>
             </Button>
           </div>
         </div>
