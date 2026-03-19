@@ -80,7 +80,6 @@ export function HeroSection() {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       className="relative min-h-[100vh] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-background via-background to-muted/30"
-      style={{ opacity }}
     >
       {/* Ambient background effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">

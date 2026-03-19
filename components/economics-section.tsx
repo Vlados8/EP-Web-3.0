@@ -58,8 +58,8 @@ function AnimatedChart() {
     return { x, y }
   })
 
-  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x}% ${p.y}%`).join(' ')
-  const areaPath = `${linePath} L 100% 100% L 0% 100% Z`
+  const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ')
+  const areaPath = `${linePath} L 100 100 L 0 100 Z`
 
   return (
     <div ref={ref} className="relative h-80 w-full group/chart">
@@ -81,7 +81,7 @@ function AnimatedChart() {
 
         {/* SVG Chart */}
         <div className="absolute inset-0 pt-4 overflow-visible">
-          <svg width="100%" height="100%" preserveAspectRatio="none" className="overflow-visible">
+          <svg viewBox="0 0 100 100" width="100%" height="100%" preserveAspectRatio="none" className="overflow-visible">
             <defs>
               <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.4" />
@@ -103,7 +103,7 @@ function AnimatedChart() {
               d={linePath}
               fill="none"
               stroke="var(--primary)"
-              strokeWidth="4"
+              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
               initial={{ pathLength: 0 }}
