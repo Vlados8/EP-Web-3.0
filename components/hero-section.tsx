@@ -105,7 +105,6 @@ export function HeroSection() {
       {/* Main content */}
       <motion.div 
         className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-2 gap-12 items-center"
-        style={{ y, scale }}
       >
         {/* Text content */}
         <div className="text-center lg:text-left order-2 lg:order-1 relative">
