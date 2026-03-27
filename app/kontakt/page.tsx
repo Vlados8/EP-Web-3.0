@@ -57,7 +57,7 @@ export default function KontaktPage() {
           </div>
 
           {/* Support Form */}
-          <div className="bg-white border border-slate-100 rounded-[3rem] p-10 shadow-elevated">
+          <div className="bg-white border border-slate-100 rounded-3xl sm:rounded-[3rem] p-6 sm:p-10 shadow-elevated">
             <SupportForm />
           </div>
         </div>

@@ -122,22 +122,24 @@ export function SupportForm() {
   return (
     <div className="space-y-8">
       {/* Progress */}
-      <div className="flex items-center gap-2 mb-10">
-        {[1, 2, 3].map((s) => (
-          <div key={s} className="flex-1 flex items-center">
-            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-black transition-all duration-500 shrink-0 ${
-              step >= s ? "bg-primary text-white shadow-glow" : "bg-slate-100 text-slate-400"
-            }`}>
-              {s}
+      <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
+        <div className="flex items-center gap-2 justify-center w-full sm:w-auto">
+          {[1, 2, 3].map((s) => (
+            <div key={s} className="flex items-center">
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-black transition-all duration-500 shrink-0 ${
+                step >= s ? "bg-primary text-white shadow-glow" : "bg-slate-100 text-slate-400"
+              }`}>
+                {s}
+              </div>
+              {s < 3 && (
+                <div className={`w-6 sm:w-12 h-1 mx-1 sm:mx-2 rounded-full transition-all duration-500 ${
+                  step > s ? "bg-primary" : "bg-slate-100"
+                }`} />
+              )}
             </div>
-            {s < 3 && (
-              <div className={`flex-1 h-1 mx-2 rounded-full transition-all duration-500 ${
-                step > s ? "bg-primary" : "bg-slate-100"
-              }`} />
-            )}
-          </div>
-        ))}
-        <div className="pl-4 shrink-0">
+          ))}
+        </div>
+        <div className="sm:ml-auto shrink-0 text-center sm:text-right">
           <span className="text-[10px] font-black text-primary uppercase tracking-[0.2em] whitespace-nowrap">Schritt {step} / 3</span>
         </div>
       </div>
@@ -151,7 +153,7 @@ export function SupportForm() {
             exit={{ opacity: 0, x: -20 }}
             className="space-y-6"
           >
-            <h3 className="text-xl font-black italic uppercase tracking-tight">Was ist Ihr Anliegen?</h3>
+            <h3 className="text-xl font-black italic uppercase tracking-tight text-center sm:text-left">Was ist Ihr Anliegen?</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               {topics.map((item) => (
                 <button
