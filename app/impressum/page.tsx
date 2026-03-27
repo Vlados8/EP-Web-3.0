@@ -7,7 +7,7 @@ export default function ImpressumPage() {
       <Navigation />
       <div className="flex-grow max-w-4xl mx-auto px-6 pb-20">
         <h1 className="text-4xl md:text-5xl font-black mb-12 tracking-tight">Impressum</h1>
-        
+
         <div className="space-y-12 text-slate-600 leading-relaxed">
           <section>
             <h2 className="text-xl font-bold text-[#0f172a] mb-4 uppercase tracking-widest text-sm">Angaben gemäß § 5 TMG</h2>
@@ -45,7 +45,7 @@ export default function ImpressumPage() {
             <h2 className="text-xl font-bold text-[#0f172a] mb-4 uppercase tracking-widest text-sm">Umsatzsteuer-ID</h2>
             <p className="text-lg">
               Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
-              DE123456789
+              DE36937652
             </p>
           </section>
 
