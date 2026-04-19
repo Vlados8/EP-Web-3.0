@@ -65,7 +65,7 @@ export function Navigation() {
             whileTap={{ scale: 0.98 }}
           >
             <div className="relative w-12 h-12 flex items-center justify-center">
-              <img src="/logo.png" alt="Empire Premium Bau Logo" className="h-10 w-auto object-contain" />
+              <img src="/logo.png" alt="Empire Premium Bau" className="h-10 w-auto object-contain" />
             </div>
           </motion.a>
 
