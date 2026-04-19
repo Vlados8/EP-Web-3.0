@@ -51,7 +51,7 @@ function AnimatedCounter({ value, suffix = "", prefix = "", duration = 2 }: Anim
 const stats = [
   {
     icon: Home,
-    value: 15420,
+    value: 1024,
     suffix: "+",
     label: "Versorgte Haushalte",
     description: "Saubere Energieinstallationen weltweit",
@@ -59,7 +59,7 @@ const stats = [
   },
   {
     icon: Leaf,
-    value: 45000,
+    value: 3500,
     suffix: "t",
     label: "CO₂-Einsparung",
     description: "Jährlich vermiedene Emissionen",
@@ -67,7 +67,7 @@ const stats = [
   },
   {
     icon: DollarSign,
-    value: 12,
+    value: 1.2,
     suffix: " Mio+",
     prefix: "€",
     label: "Kundenersparnisse",

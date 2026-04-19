@@ -196,7 +196,7 @@ export function HeroSection() {
           >
             {[
               { value: "98%", label: "Effizienz", color: "text-primary" },
-              { value: "15k+", label: "Kunden", color: "text-secondary" },
+              { value: "1024+", label: "Kunden", color: "text-secondary" },
               { value: "25J", label: "Garantie", color: "text-accent" },
             ].map((stat, index) => (
               <div key={index} className="text-center lg:text-left group cursor-default">
