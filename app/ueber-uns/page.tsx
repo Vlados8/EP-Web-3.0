@@ -65,7 +65,7 @@ export default function UeberUnsPage() {
           <div className="space-y-6">
             <h2 className="text-3xl font-bold tracking-tight">Unsere Philosophie</h2>
             <p className="text-lg text-slate-600 leading-relaxed">
-              Seit unserer Gründung steht die Empire Premium Bau GmbH für Exzellenz im Bereich der erneuerbaren Energien. Mit Sitz in Bremen betreuen wir Kunden in ganz Norddeutschland bei der Planung und Umsetzung ihrer individuellen Energiewende.
+              Seit unserer Gründung steht die Empire Premium Bau UG für Exzellenz im Bereich der erneuerbaren Energien. Mit Sitz in Bremen betreuen wir Kunden in ganz Norddeutschland bei der Planung und Umsetzung ihrer individuellen Energiewende.
             </p>
             <p className="text-lg text-slate-600 leading-relaxed">
               Wir begleiten Sie von der ersten unverbindlichen Beratung bis zur fertigen Installation und darüber hinaus. Qualität, Zuverlässigkeit und Transparenz sind dabei unser höchstes Gebot.
