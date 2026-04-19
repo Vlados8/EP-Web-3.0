@@ -12,7 +12,7 @@ export default function ImpressumPage() {
           <section>
             <h2 className="text-xl font-bold text-[#0f172a] mb-4 uppercase tracking-widest text-sm">Angaben gemäß § 5 TMG</h2>
             <p className="text-lg">
-              Empire Premium Bau GmbH<br />
+              Empire Premium Bau UG<br />
               Hastedter Heerstraße 63<br />
               28207 Bremen<br />
               Deutschland
