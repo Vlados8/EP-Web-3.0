@@ -35,9 +35,9 @@ export default function RootLayout({
   return (
     <html lang="de" className={inter.variable}>
       <head>
-        {/* Google Ads (gtag.js) */}
+        {/* Google Analytics / Google Ads (gtag.js) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=AW-10937556386"
+          src="https://www.googletagmanager.com/gtag/js?id=G-25DB3HVH1F"
           strategy="afterInteractive"
         />
         <Script id="google-ads" strategy="afterInteractive">
@@ -45,21 +45,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'AW-10937556386');
-
-            // Helper function to delay opening a URL until a gtag event is sent.
-            function gtagSendEvent(url) {
-              var callback = function () {
-                if (typeof url === 'string') {
-                  window.location = url;
-                }
-              };
-              gtag('event', 'ads_conversion_Registrieren_1', {
-                'event_callback': callback,
-                'event_timeout': 2000,
-              });
-              return false;
-            }
+            gtag('config', 'G-25DB3HVH1F');
           `}
         </Script>
       </head>
