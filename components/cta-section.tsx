@@ -186,7 +186,7 @@ export function CTASection() {
             className="mt-10 pt-8 border-t border-border/50 flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground"
           >
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-foreground">15.000+</span>
+              <span className="font-semibold text-foreground">1.024+</span>
               <span>Installationen</span>
             </div>
             <div className="hidden sm:block w-1 h-1 rounded-full bg-muted-foreground/30" />
