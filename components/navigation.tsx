@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { Menu, X, Sun, Zap, Battery, Thermometer } from "lucide-react"
+import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
@@ -56,7 +56,30 @@ export function Navigation() {
           className="absolute inset-0 glass-strong shadow-soft pointer-events-none"
           style={{ opacity: headerBgOpacity }}
         />
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+        {/* Top Contact Bar */}
+        <motion.div 
+          initial={false}
+          animate={{ 
+            height: isScrolled ? 0 : 'auto',
+            opacity: isScrolled ? 0 : 1,
+            marginBottom: isScrolled ? 0 : '0.5rem'
+          }}
+          className="w-full overflow-hidden relative z-10"
+        >
+          <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 flex flex-wrap justify-center items-center gap-2 sm:gap-4 text-[11px] sm:text-xs font-semibold tracking-wide text-foreground">
+            <a href="mailto:info@empire-premium-bau.de" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
+              <Mail className="w-3.5 h-3.5 text-primary" />
+              <span>info@empire-premium-bau.de</span>
+            </a>
+            <a href="tel:+4917661951823" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
+              <Phone className="w-3.5 h-3.5 text-primary" />
+              <span>+49 176 61951823</span>
+            </a>
+          </div>
+        </motion.div>
+
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative z-10">
           {/* Logo */}
           <motion.a 
             href="/"
