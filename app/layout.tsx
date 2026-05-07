@@ -37,7 +37,7 @@ export default function RootLayout({
       <head>
         {/* Google Analytics / Google Ads (gtag.js) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-25DB3HVH1F"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18093667327"
           strategy="afterInteractive"
         />
         <Script id="google-ads" strategy="afterInteractive">
@@ -45,7 +45,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-25DB3HVH1F');
+            gtag('config', 'AW-18093667327');
           `}
         </Script>
       </head>
