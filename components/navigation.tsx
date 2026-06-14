@@ -1,16 +1,19 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { usePathname } from "next/navigation"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone } from "lucide-react"
+import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone, Briefcase } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
   { name: "Photovoltaik", href: "/#solar", icon: Sun },
   { name: "Wärmepumpen", href: "/#heatpump", icon: Thermometer },
+  { name: "Karriere", href: "/karriere", icon: Briefcase },
 ]
 
 export function Navigation() {
+  const pathname = usePathname()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
@@ -21,8 +24,16 @@ export function Navigation() {
   const headerYPadding = useTransform(scrollY, [0, 80], [24, 12]) // py-6 (24px) to py-3 (12px)
 
   useEffect(() => {
+    if (pathname === "/karriere") {
+      setActiveSection("karriere")
+    } else {
+      setActiveSection("")
+    }
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
+      
+      if (pathname === "/karriere") return
       
       // Update active section based on scroll position
       const sections = navItems.map(item => item.href.substring(1))
@@ -39,8 +50,9 @@ export function Navigation() {
     }
 
     window.addEventListener("scroll", handleScroll)
+    handleScroll()
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  }, [pathname])
 
   return (
     <>
@@ -76,6 +88,13 @@ export function Navigation() {
               <Phone className="w-3.5 h-3.5 text-primary" />
               <span>+49 176 61951823</span>
             </a>
+            <a href="/karriere" className="flex items-center justify-center gap-1.5 sm:gap-2 text-primary hover:text-primary-foreground hover:bg-primary transition-all bg-primary/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-primary/20 shadow-sm font-bold">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              <span>Wir stellen ein! 💼</span>
+            </a>
           </div>
         </motion.div>
 
@@ -102,7 +121,7 @@ export function Navigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.5 }}
                 className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full group ${
-                  activeSection === item.href.substring(1)
+                  activeSection === item.href.substring(1) || (item.href === "/karriere" && pathname === "/karriere")
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
@@ -111,7 +130,7 @@ export function Navigation() {
                   <item.icon className="w-4 h-4" />
                   {item.name}
                 </span>
-                {activeSection === item.href.substring(1) && (
+                {(activeSection === item.href.substring(1) || (item.href === "/karriere" && pathname === "/karriere")) && (
                   <motion.div
                     layoutId="activeNav"
                     className="absolute inset-0 bg-primary/10 rounded-full"
