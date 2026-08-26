@@ -56,7 +56,7 @@ const jobsSchema = jobOpenings.map(job => ({
   "employmentType": job.type === "Ausbildung" ? "FULL_TIME" : job.type === "Praktikum" ? "INTERNSHIP" : "FULL_TIME",
   "hiringOrganization": {
     "@type": "Organization",
-    "name": "Empire Premium Bau UG",
+    "name": "Empire Premium Bau GmbH",
     "sameAs": "https://empire-premium-bau.de",
     "logo": "https://empire-premium-bau.de/logo.png"
   },
