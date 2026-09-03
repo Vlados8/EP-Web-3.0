@@ -683,6 +683,9 @@ export function IntelligentCalculator() {
 
       const resData = await response.json()
       if (response.ok) {
+        if (typeof window !== "undefined" && (window as any).oaiq) {
+          (window as any).oaiq("measure", "checkout_started", { type: "contents" })
+        }
         setSubmitStatus({ success: true, message: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden." })
         setView("result")
       } else {

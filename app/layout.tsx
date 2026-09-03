@@ -56,6 +56,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             gtag('config', 'AW-18093667327');
           `}
         </Script>
+        {/* OpenAI Ads Pixel */}
+        <Script id="openai-pixel" strategy="afterInteractive">
+          {`
+            !function(e,t,n,s,u,a){e.oaiq||(u=e.oaiq=function(){u.callMethod?u.callMethod.apply(u,arguments):u.queue.push(arguments)},u.queue=[],a=t.createElement(n),a.async=!0,a.src=s,t.getElementsByTagName(n)[0].parentNode.appendChild(a))}(window,document,"script","https://bzr.openai.com/v1/events/pixel.js");
+            oaiq("init", { pixelId: "UZIFDGTZHJZUKL" });
+          `}
+        </Script>
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
         {/* Google Tag Manager (noscript) */}

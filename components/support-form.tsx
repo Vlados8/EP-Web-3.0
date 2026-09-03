@@ -75,6 +75,10 @@ export function SupportForm() {
 
       if (!response.ok) throw new Error("Fehler beim Senden des Tickets.")
       
+      if (typeof window !== "undefined" && (window as any).oaiq) {
+        (window as any).oaiq("measure", "checkout_started", { type: "contents" })
+      }
+
       setSuccess(true)
     } catch (err: any) {
       setError(err.message)
