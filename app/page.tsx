@@ -22,10 +22,10 @@ export default function Home() {
     <main className="relative">
       <Navigation />
       <HeroSection />
+      <IntelligentCalculator />
       <SolarSection />
       <HeatPumpSection />
       <CombinedSolutionSection />
-      <IntelligentCalculator />
       <ProcessSection />
       <StatsSection />
       <EconomicsSection />
