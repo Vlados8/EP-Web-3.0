@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import { motion } from "framer-motion"
 import { 
   Users, 
@@ -76,10 +76,8 @@ const values = [
 ]
 
 export function TeamPageContent() {
-  const [imgSrc, setImgSrc] = useState<string>("/team.jpg")
-
   return (
-    <div className="flex-grow pt-32 pb-24">
+    <div className="flex-grow pt-44 sm:pt-52 pb-24">
       {/* ─── Hero Section ─────────────────────────────────── */}
       <section className="relative px-6 max-w-7xl mx-auto mb-16 text-center">
         {/* Glow ambient background */}
@@ -120,66 +118,56 @@ export function TeamPageContent() {
       </section>
 
       {/* ─── Grand Team Photo Showcase ─────────────────────── */}
-      <section className="px-6 max-w-7xl mx-auto mb-28">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.96, y: 30 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative group rounded-3xl overflow-hidden border border-border/80 dark:border-white/10 bg-card shadow-elevated"
-        >
-          {/* Subtle Ambient Backlight */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-secondary/20 to-primary/20 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition duration-700 pointer-events-none" />
+      <section className="px-4 sm:px-6 max-w-5xl mx-auto mb-28">
+        <div className="relative group">
+          {/* Subtle Ambient Glow behind the photo echoing the blue neon sign */}
+          <div className="absolute -inset-2 bg-gradient-to-r from-blue-600/25 via-emerald-500/20 to-blue-500/25 rounded-3xl blur-2xl opacity-60 group-hover:opacity-80 transition duration-700 pointer-events-none -z-10" />
 
-          {/* Photo container with 16:9 ratio */}
-          <div className="relative w-full aspect-[16/9] md:aspect-[21/9] min-h-[360px] sm:min-h-[440px] lg:min-h-[540px] overflow-hidden bg-slate-900 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="relative rounded-3xl overflow-hidden border border-border/80 dark:border-white/10 shadow-2xl"
+          >
             <img
-              src={imgSrc}
-              alt="Das Team von Empire Premium Bau"
-              onError={() => {
-                // Fallback to existing working photo if /team.jpg is not yet uploaded
-                if (imgSrc !== "/solar_team_working_1.png") {
-                  setImgSrc("/solar_team_working_1.png")
-                }
-              }}
-              className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-[1.02]"
+              src="/team.jpg"
+              alt="Das gesamte Team von Empire Premium Bau vor dem Firmengebäude in Bremen"
+              className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.01]"
             />
 
-            {/* Gradient Overlay for legibility & premium look */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+            {/* Subtle bottom gradient to ensure text contrast */}
+            <div className="absolute inset-x-0 bottom-0 h-28 sm:h-36 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none" />
 
-            {/* Top Floating Badge */}
-            <div className="absolute top-4 sm:top-6 left-4 sm:left-6 flex flex-wrap gap-2.5 z-10">
-              <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-lg">
-                <Users className="w-4 h-4 text-primary" />
-                <span>Empire Premium Bau Mannschaft</span>
+            {/* Top Floating Badges */}
+            <div className="absolute top-3 sm:top-5 left-3 sm:left-5 right-3 sm:right-5 flex items-center justify-between pointer-events-none z-10">
+              <div className="flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] sm:text-xs font-semibold shadow-lg">
+                <Users className="w-3.5 h-3.5 text-sky-400" />
+                <span>Offizielles Team Empire Premium Bau</span>
               </div>
-              <div className="hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/90 text-primary-foreground text-xs font-bold shadow-lg">
+              <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-primary/95 text-primary-foreground text-[11px] sm:text-xs font-bold shadow-lg">
                 <Check className="w-3.5 h-3.5" />
-                <span>Meistergeführt</span>
+                <span>100% Eigenes Fachpersonal</span>
               </div>
             </div>
 
             {/* Bottom Caption Info */}
-            <div className="absolute bottom-6 left-6 right-6 z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+            <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-5 right-3 sm:right-5 z-10 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 pointer-events-none">
               <div className="max-w-xl text-white">
-                <span className="text-xs uppercase tracking-widest text-primary font-bold block mb-1">
-                  Teamgeist & Kompetenz
+                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-sky-400 font-bold block mb-0.5">
+                  Gemeinsam stark für Norddeutschland
                 </span>
-                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white drop-shadow-md">
-                  Handwerk, das begeistert.
+                <h3 className="text-base sm:text-xl font-black text-white drop-shadow-md">
+                  Handwerk, Verlässlichkeit & Zusammenhalt.
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-200 mt-1 leading-relaxed line-clamp-2">
-                  Gemeinsam planen, montieren und vernetzen wir modernste Photovoltaik- und Wärmepumpensysteme aus einer Hand.
-                </p>
               </div>
 
-              <div className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-medium">
-                <Sparkles className="w-4 h-4 text-yellow-400" />
+              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-md border border-white/20 text-white text-[11px] font-medium">
+                <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
                 <span>Standort Bremen & 100 km Radius</span>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
 
         {/* Stats Grid Under Photo */}
         <motion.div
