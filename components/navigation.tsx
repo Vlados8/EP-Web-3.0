@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
-import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone, Briefcase } from "lucide-react"
+import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone, Briefcase, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
   { name: "Photovoltaik", href: "/#solar", icon: Sun },
   { name: "Wärmepumpen", href: "/#heatpump", icon: Thermometer },
+  { name: "Unser Team", href: "/unser-team", icon: Users },
   { name: "Karriere", href: "/karriere", icon: Briefcase },
 ]
 
@@ -26,6 +27,8 @@ export function Navigation() {
   useEffect(() => {
     if (pathname === "/karriere") {
       setActiveSection("karriere")
+    } else if (pathname === "/unser-team") {
+      setActiveSection("unser-team")
     } else {
       setActiveSection("")
     }
@@ -121,7 +124,7 @@ export function Navigation() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 * index, duration: 0.5 }}
                 className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-full group ${
-                  activeSection === item.href.substring(1) || (item.href === "/karriere" && pathname === "/karriere")
+                  (activeSection && activeSection === item.href.substring(1)) || (item.href.startsWith("/") && !item.href.includes("#") && pathname === item.href)
                     ? "text-primary"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
@@ -130,7 +133,7 @@ export function Navigation() {
                   <item.icon className="w-4 h-4" />
                   {item.name}
                 </span>
-                {(activeSection === item.href.substring(1) || (item.href === "/karriere" && pathname === "/karriere")) && (
+                {((activeSection && activeSection === item.href.substring(1)) || (item.href.startsWith("/") && !item.href.includes("#") && pathname === item.href)) && (
                   <motion.div
                     layoutId="activeNav"
                     className="absolute inset-0 bg-primary/10 rounded-full"
