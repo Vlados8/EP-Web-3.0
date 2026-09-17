@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Sun, Zap, Battery, Thermometer, Mail, Phone, Briefcase, Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -18,11 +18,6 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState("")
-  const { scrollY } = useScroll()
-  
-  // Create smooth background opacity based on scroll
-  const headerBgOpacity = useTransform(scrollY, [8, 80], [0, 1])
-  const headerYPadding = useTransform(scrollY, [0, 80], [24, 12]) // py-6 (24px) to py-3 (12px)
 
   useEffect(() => {
     if (pathname === "/karriere") {
@@ -39,7 +34,10 @@ export function Navigation() {
       if (pathname === "/karriere") return
       
       // Update active section based on scroll position
-      const sections = navItems.map(item => item.href.substring(1))
+      const sections = navItems
+        .filter(item => item.href.includes("#"))
+        .map(item => item.href.split("#")[1])
+
       for (const section of sections.reverse()) {
         const element = document.getElementById(section)
         if (element) {
@@ -57,41 +55,38 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [pathname])
 
+  const handleScrollToCalculator = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault()
+      const element = document.getElementById("calculator")
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" })
+        window.history.replaceState(null, "", "#calculator")
+      }
+    }
+  }
+
   return (
     <>
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
-        style={{ paddingTop: headerYPadding, paddingBottom: headerYPadding }}
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 py-2 sm:py-2.5 ${
+          isScrolled 
+            ? "glass-strong shadow-soft border-b border-border/40" 
+            : "bg-background/90 backdrop-blur-md border-b border-border/20"
+        }`}
       >
-        {/* Animated Background Layer */}
-        <motion.div 
-          className="absolute inset-0 glass-strong shadow-soft pointer-events-none"
-          style={{ opacity: headerBgOpacity }}
-        />
-
-        {/* Top Contact Bar */}
-        <motion.div 
-          initial={false}
-          animate={{ 
-            height: isScrolled ? 0 : 'auto',
-            opacity: isScrolled ? 0 : 1,
-            marginBottom: isScrolled ? 0 : '0.5rem'
-          }}
-          className="w-full overflow-hidden relative z-10"
-        >
-          <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 flex flex-wrap justify-center items-center gap-2 sm:gap-4 text-[11px] sm:text-xs font-semibold tracking-wide text-foreground">
-            <a href="mailto:info@empire-premium-bau.de" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
+        {/* Top Contact Bar - Permanently visible and accessible */}
+        <div className="w-full relative z-10 mb-1.5">
+          <div className="max-w-7xl mx-auto px-2 md:px-4 flex flex-wrap justify-center items-center gap-2 sm:gap-4 text-[11px] sm:text-xs font-semibold tracking-wide text-foreground">
+            <a href="mailto:info@empire-premium-bau.de" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
               <Mail className="w-3.5 h-3.5 text-primary" />
               <span>info@empire-premium-bau.de</span>
             </a>
-            <a href="tel:+4917661951823" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
+            <a href="tel:+4917661951823" className="flex items-center justify-center gap-1.5 sm:gap-2 hover:text-primary transition-colors bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 px-3 sm:px-4 py-1 rounded-full backdrop-blur-md border border-black/5 dark:border-white/10 shadow-sm">
               <Phone className="w-3.5 h-3.5 text-primary" />
               <span>+49 176 61951823</span>
             </a>
-            <a href="/karriere" className="flex items-center justify-center gap-1.5 sm:gap-2 text-primary hover:text-primary-foreground hover:bg-primary transition-all bg-primary/10 px-3 sm:px-4 py-1.5 rounded-full backdrop-blur-md border border-primary/20 shadow-sm font-bold">
+            <a href="/karriere" className="flex items-center justify-center gap-1.5 sm:gap-2 text-primary hover:text-primary-foreground hover:bg-primary transition-all bg-primary/10 px-3 sm:px-4 py-1 rounded-full backdrop-blur-md border border-primary/20 shadow-sm font-bold">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
@@ -99,7 +94,7 @@ export function Navigation() {
               <span>Wir stellen ein! 💼</span>
             </a>
           </div>
-        </motion.div>
+        </div>
 
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between relative z-10">
           {/* Logo */}
@@ -154,11 +149,16 @@ export function Navigation() {
             >
               <Button 
                 asChild
-                className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 py-2 text-sm font-medium shadow-soft group"
+                className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-6 py-2.5 text-sm font-bold shadow-soft group cursor-pointer"
               >
-                <a href="/#calculator">
-                  <span className="relative z-10">Angebot erstellen</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <a 
+                  href="/#calculator"
+                  onClick={handleScrollToCalculator}
+                >
+                  <span className="relative z-10 flex items-center gap-1.5">
+                    <span>Kostenloses Angebot</span>
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 </a>
               </Button>
             </motion.div>
@@ -173,7 +173,7 @@ export function Navigation() {
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </motion.button>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -201,8 +201,16 @@ export function Navigation() {
                     <span className="font-medium">{item.name}</span>
                   </motion.a>
                 ))}
-                <Button asChild className="mt-4 w-full rounded-full bg-foreground text-background">
-                  <a href="/#calculator" onClick={() => setIsMobileMenuOpen(false)}>Angebot erstellen</a>
+                <Button asChild className="mt-4 w-full rounded-full bg-foreground text-background py-6 font-bold cursor-pointer">
+                  <a 
+                    href="/#calculator" 
+                    onClick={(e) => {
+                      setIsMobileMenuOpen(false)
+                      handleScrollToCalculator(e)
+                    }}
+                  >
+                    Kostenloses Angebot
+                  </a>
                 </Button>
               </nav>
             </div>

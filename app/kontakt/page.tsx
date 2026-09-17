@@ -30,7 +30,9 @@ export default function KontaktPage() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Telefon</p>
-                  <p className="text-xl font-bold text-[#0f172a] hover:text-primary transition-colors cursor-pointer">+49 176 61951823</p>
+                  <a href="tel:+4917661951823" className="text-xl font-bold text-[#0f172a] hover:text-primary transition-colors block cursor-pointer">
+                    +49 176 61951823
+                  </a>
                 </div>
               </div>
 
@@ -40,7 +42,9 @@ export default function KontaktPage() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">E-Mail</p>
-                  <p className="text-xl font-bold text-[#0f172a] hover:text-primary transition-colors cursor-pointer">info@empire-premium-bau.de</p>
+                  <a href="mailto:info@empire-premium-bau.de" className="text-xl font-bold text-[#0f172a] hover:text-primary transition-colors block cursor-pointer">
+                    info@empire-premium-bau.de
+                  </a>
                 </div>
               </div>
 

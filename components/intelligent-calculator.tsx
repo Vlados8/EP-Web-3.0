@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Sun, Thermometer, ChevronRight, Zap, Home, Users, MapPin, Flame, Snowflake, HelpCircle, Check, ArrowRight, RefreshCw, ArrowLeft, LayoutGrid, ChevronLeft } from "lucide-react"
+import { Sun, Thermometer, ChevronRight, Zap, Home, Users, MapPin, Flame, Snowflake, HelpCircle, Check, ArrowRight, RefreshCw, ArrowLeft, LayoutGrid, ChevronLeft, ShieldCheck, AlertCircle, MessageCircle, Phone, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useInView } from "framer-motion"
 
@@ -151,29 +151,34 @@ function RangeInput({ question, value, onChange }: {
   const min = question.config?.min ?? 0
   const max = question.config?.max ?? 1000
   const step = question.config?.step ?? 10
-  const unit = question.unit ?? "€"
-  const current = value ? parseInt(value) : (question.config?.default ?? min)
-  const pct = ((current - min) / (max - min)) * 100
+  const unit = question.unit ?? ""
+  const defaultVal = question.config?.default ?? min
+  const current = value !== undefined && value !== "" ? parseInt(value) : defaultVal
+  const pct = max > min ? Math.max(0, Math.min(100, ((current - min) / (max - min)) * 100)) : 0
+
+  // Automatically initialize default value in form answers so user can proceed immediately
+  useEffect(() => {
+    if (value === undefined || value === "") {
+      onChange(defaultVal.toString())
+    }
+  }, [question.id, value, defaultVal, onChange])
 
   return (
     <div className="space-y-6 w-full max-w-2xl mx-auto">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-3xl font-extrabold text-[#0f172a]">
+      <div className="flex items-center justify-start mb-2">
+        <span className="text-4xl font-extrabold text-[#0f172a] tracking-tight">
           {current.toLocaleString()}{unit}
         </span>
       </div>
-      <div className="relative h-2 rounded-full bg-muted overflow-visible">
+      <div className="relative h-2.5 rounded-full bg-slate-100 overflow-visible">
         <div
-          className="absolute left-0 top-0 h-full rounded-full bg-primary transition-all duration-100"
+          className="absolute left-0 top-0 h-full rounded-full bg-[#16a34a] transition-all duration-75"
           style={{ width: `${pct}%` }}
         />
-        <motion.div
-          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 -ml-3 rounded-full bg-primary shadow-elevated flex items-center justify-center"
+        <div
+          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 -ml-3 rounded-full bg-white border-4 border-[#16a34a] shadow-md flex items-center justify-center cursor-pointer pointer-events-none"
           style={{ left: `${pct}%` }}
-          whileHover={{ scale: 1.2 }}
-        >
-          <div className="w-2 h-2 rounded-full bg-primary-foreground" />
-        </motion.div>
+        />
         <input
           type="range"
           min={min}
@@ -181,10 +186,10 @@ function RangeInput({ question, value, onChange }: {
           step={step}
           value={current}
           onChange={(e) => onChange(e.target.value)}
-          className="absolute inset-0 w-full opacity-0 cursor-pointer"
+          className="absolute inset-0 w-full opacity-0 cursor-pointer h-full z-10"
         />
       </div>
-      <div className="flex justify-between text-xs text-muted-foreground">
+      <div className="flex justify-between text-xs text-slate-400 font-medium">
         <span>{min}{unit}</span>
         <span>{max}{unit}</span>
       </div>
@@ -257,63 +262,122 @@ function ResultPanel({ status, onReset }: {
   )
 }
 
-function ContactStep({ info, onChange }: {
+function ContactStep({
+  info,
+  onChange,
+  errors
+}: {
   info: ContactInfo
   onChange: (field: keyof ContactInfo, val: string) => void
+  errors: Partial<Record<keyof ContactInfo, string>>
 }) {
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Name / Firma *</label>
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-black text-slate-700 uppercase tracking-wider ml-1">
+            Name / Firma *
+          </label>
+          {errors.name && <span className="text-xs font-bold text-red-500">{errors.name}</span>}
+        </div>
         <input
           type="text"
           value={info.name}
           onChange={(e) => onChange("name", e.target.value)}
           placeholder="Max Mustermann"
-          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
+          className={`w-full bg-white rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] ${
+            errors.name 
+              ? "border-2 border-red-500 ring-2 ring-red-100" 
+              : "border border-slate-200 focus:ring-primary/10 focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)]"
+          }`}
         />
       </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">E-Mail Adresse *</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-black text-slate-700 uppercase tracking-wider ml-1">
+              E-Mail Adresse *
+            </label>
+            {errors.email && <span className="text-xs font-bold text-red-500">{errors.email}</span>}
+          </div>
           <input
             type="email"
             value={info.email}
             onChange={(e) => onChange("email", e.target.value)}
             placeholder="max@beispiel.de"
-            className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
+            className={`w-full bg-white rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] ${
+              errors.email 
+                ? "border-2 border-red-500 ring-2 ring-red-100" 
+                : "border border-slate-200 focus:ring-primary/10 focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)]"
+            }`}
           />
         </div>
+
         <div className="space-y-2">
-          <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Telefonnummer *</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-black text-slate-700 uppercase tracking-wider ml-1">
+              Telefonnummer *
+            </label>
+            {errors.phone && <span className="text-xs font-bold text-red-500">{errors.phone}</span>}
+          </div>
           <input
             type="tel"
             value={info.phone}
             onChange={(e) => onChange("phone", e.target.value)}
-            placeholder="0123 456789"
-            className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
+            placeholder="0176 12345678"
+            className={`w-full bg-white rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] ${
+              errors.phone 
+                ? "border-2 border-red-500 ring-2 ring-red-100" 
+                : "border border-slate-200 focus:ring-primary/10 focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)]"
+            }`}
           />
+          <p className="text-[11px] text-slate-400 font-medium ml-1">
+            🔒 Kein Spam. Nur für eine kurze Rückfrage zur Erstellung Ihres Angebots.
+          </p>
         </div>
       </div>
+
       <div className="space-y-2">
-        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Wohnort / PLZ *</label>
+        <div className="flex items-center justify-between">
+          <label className="text-xs font-black text-slate-700 uppercase tracking-wider ml-1">
+            Wohnort / PLZ *
+          </label>
+          {errors.zip && <span className="text-xs font-bold text-red-500">{errors.zip}</span>}
+        </div>
         <input
           type="text"
           value={info.zip}
           onChange={(e) => onChange("zip", e.target.value)}
-          placeholder="12345 Berlin"
-          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
+          placeholder="28207 Bremen"
+          className={`w-full bg-white rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] ${
+            errors.zip 
+              ? "border-2 border-red-500 ring-2 ring-red-100" 
+              : "border border-slate-200 focus:ring-primary/10 focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)]"
+          }`}
         />
       </div>
+
       <div className="space-y-2">
-        <label className="text-xs font-black text-slate-600 uppercase tracking-wider ml-1">Nachricht / Notizen</label>
+        <label className="text-xs font-black text-slate-700 uppercase tracking-wider ml-1">
+          Nachricht / Notizen (optional)
+        </label>
         <textarea
           value={info.notes}
           onChange={(e) => onChange("notes", e.target.value)}
-          placeholder="Haben Sie spezielle Wünsche?"
-          rows={4}
-          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900 resize-none"
+          placeholder="Haben Sie spezielle Wünsche oder Fragen?"
+          rows={3}
+          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-8px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-base text-slate-900 resize-none"
         />
+      </div>
+
+      {/* Trust & DSGVO banner */}
+      <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 flex items-start gap-3">
+        <ShieldCheck className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+        <div className="text-xs text-slate-600 leading-relaxed">
+          <span className="font-bold text-slate-900 block">100% kostenlos, unverbindlich & DSGVO-konform</span>
+          Ihre Angaben werden vertraulich behandelt und ausschließlich von unserem Team zur Ausarbeitung Ihres individuellen Angebots verwendet. Keine Weitergabe an Werbenetzwerke.
+        </div>
       </div>
     </div>
   )
@@ -512,6 +576,7 @@ export function IntelligentCalculator() {
   const [history, setHistory] = useState<any[]>([])
   const [answers, setAnswers] = useState<Answers>({})
   const [contactInfo, setContactInfo] = useState<ContactInfo>({ name: "", email: "", phone: "", zip: "", notes: "" })
+  const [formErrors, setFormErrors] = useState<Partial<Record<keyof ContactInfo, string>>>({})
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ success: boolean, message: string } | null>(null)
@@ -590,6 +655,17 @@ export function IntelligentCalculator() {
   }
 
   function handleManualNext(q: ApiQuestion) {
+    // If it's a range/slider and no value was recorded yet, save the default value
+    const isRange = q.type === "range" || q.type === "slider"
+    if (isRange && (!answers[q.id] || !answers[q.id].value)) {
+      const min = q.config?.min ?? 0
+      const defVal = (q.config?.default ?? min).toString()
+      setAnswers(prev => ({
+        ...prev,
+        [q.id]: { value: defVal }
+      }))
+    }
+
     setHistory((prev) => [...prev, { view: "question", qId: q.id }])
 
     const sortedQs = [...(currentSubcategory?.questions || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
@@ -683,8 +759,13 @@ export function IntelligentCalculator() {
 
       const resData = await response.json()
       if (response.ok) {
-        if (typeof window !== "undefined" && (window as any).oaiq) {
-          (window as any).oaiq("measure", "checkout_started", { type: "contents" })
+        if (typeof window !== "undefined") {
+          if ((window as any).oaiq) {
+            (window as any).oaiq("measure", "checkout_started", { type: "contents" })
+          }
+          if ((window as any).dataLayer) {
+            (window as any).dataLayer.push({ event: 'lead_form_submitted', category: currentCategory?.name })
+          }
         }
         setSubmitStatus({ success: true, message: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden." })
         setView("result")
@@ -692,10 +773,38 @@ export function IntelligentCalculator() {
         throw new Error(resData.message || "Fehler beim Senden der Anfrage")
       }
     } catch (error: any) {
-      setSubmitStatus({ success: false, message: error.message || "Ein unerwarteter Fehler ist aufgetreten." })
+      setSubmitStatus({ success: false, message: error.message || "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut." })
     } finally {
       setSubmitting(false)
     }
+  }
+
+  function validateContactForm(): boolean {
+    const errors: Partial<Record<keyof ContactInfo, string>> = {}
+    if (!contactInfo.name.trim()) {
+      errors.name = "Bitte geben Sie Ihren Namen an."
+    }
+    if (!contactInfo.email.trim()) {
+      errors.email = "Bitte geben Sie Ihre E-Mail an."
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactInfo.email.trim())) {
+      errors.email = "Bitte geben Sie eine gültige E-Mail-Adresse ein."
+    }
+    if (!contactInfo.phone.trim()) {
+      errors.phone = "Bitte geben Sie Ihre Telefonnummer an."
+    } else if (contactInfo.phone.replace(/\D/g, "").length < 6) {
+      errors.phone = "Bitte geben Sie eine gültige Rufnummer ein."
+    }
+    if (!contactInfo.zip.trim()) {
+      errors.zip = "Bitte geben Sie Ihre PLZ / Wohnort an."
+    }
+
+    setFormErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  function handleSubmitInquiry() {
+    if (!validateContactForm()) return
+    submitInquiry()
   }
 
   function handleReset() {
@@ -706,11 +815,12 @@ export function IntelligentCalculator() {
     setHistory([])
     setAnswers({})
     setContactInfo({ name: "", email: "", phone: "", zip: "", notes: "" })
+    setFormErrors({})
     setSubmitStatus(null)
   }
 
   return (
-    <section id="calculator" ref={ref} className="relative py-32 overflow-hidden">
+    <section id="calculator" ref={ref} className="relative py-32 overflow-hidden scroll-mt-28">
       <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
@@ -720,14 +830,29 @@ export function IntelligentCalculator() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16 space-y-4"
+            className="text-center mb-14 space-y-4"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-[#0f172a] tracking-tight">
-              Wählen Sie Ihre Services
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 text-xs font-black uppercase tracking-wider mb-2">
+              Online-Konfigurator
+            </div>
+            <h2 className="text-3xl md:text-5xl font-black text-[#0f172a] tracking-tight">
+              Ihr kostenloses Angebot in 2 Minuten
             </h2>
-            <p className="text-xl text-slate-500 max-w-2xl mx-auto font-medium">
-              Stellen Sie Ihr individuelles Paket für Ihr intelligentes Zuhause zusammen
+            <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
+              <span className="font-bold text-[#0f172a]">Schritt 1 von 3:</span> Wählen Sie Ihren Bereich – Photovoltaik oder Wärmepumpe. Beantworten Sie wenige Fragen für ein maßgeschneidertes, unverbindliches Festpreisangebot.
             </p>
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-2">
+              <span className="px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 shadow-sm">
+                ⏱️ Nur 2 Min. Zeitaufwand
+              </span>
+              <span className="px-3.5 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200 shadow-sm">
+                🛡️ 100% Kostenlos & Unverbindlich
+              </span>
+              <span className="px-3.5 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200 shadow-sm">
+                ⚡ Transparente Richtpreis-Kalkulation
+              </span>
+            </div>
           </motion.div>
         )}
 
@@ -773,12 +898,17 @@ export function IntelligentCalculator() {
                         }
                       </div>
 
-                      <h3 className="text-3xl font-extrabold text-[#0f172a] mb-12 tracking-tight">{cat.name}</h3>
+                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">{cat.name}</h3>
+                      <p className="text-sm text-slate-500 mb-8 font-medium">
+                        {cat.name.toLowerCase().includes("pv") || cat.name.toLowerCase().includes("solar")
+                          ? "Solaranlage konfigurieren & kostenloses Angebot erhalten"
+                          : "Wärmepumpensystem berechnen & kostenloses Angebot erhalten"}
+                      </p>
 
                       <div
                         className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                       >
-                        Starten
+                        Angebot berechnen
                         <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </motion.button>
@@ -889,9 +1019,11 @@ export function IntelligentCalculator() {
                               disabled={
                                 (currentQuestion.type === "checkbox" || currentQuestion.type === "multi")
                                   ? !answers[currentQuestion.id]?.checkedIds?.length
-                                  : !answers[currentQuestion.id]?.value
+                                  : (currentQuestion.type === "range" || currentQuestion.type === "slider")
+                                    ? false // Always valid with default value
+                                    : !answers[currentQuestion.id]?.value
                               }
-                              className="flex items-center gap-2 px-10 py-3 rounded-full text-sm font-bold bg-[#3b82f6] text-white disabled:opacity-50 shadow-[0_20px_40px_-12px_rgba(59,130,246,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)] transition-all"
+                              className="flex items-center gap-2 px-10 py-3 rounded-full text-sm font-bold bg-[#3b82f6] text-white disabled:opacity-50 shadow-[0_20px_40px_-12px_rgba(59,130,246,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)] transition-all cursor-pointer disabled:cursor-not-allowed"
                             >
                               Weiter
                               <ChevronRight className="w-5 h-5" />
@@ -903,40 +1035,115 @@ export function IntelligentCalculator() {
 
                     {/* Contact form */}
                     {view === "contact" && (
-                      <motion.div key="contact" className="flex-1 flex flex-col justify-between py-10">
-                        <div className="space-y-8 max-w-2xl mx-auto w-full">
+                      <motion.div key="contact" className="flex-1 flex flex-col justify-between py-6">
+                        <div className="space-y-6 max-w-2xl mx-auto w-full">
                           <div className="text-center">
-                            <h3 className="text-3xl font-black text-[#0f172a] mb-2">Fast am Ziel!</h3>
-                            <p className="text-slate-500 font-medium">Ihre unverbindliche Schätzung ist bereit.</p>
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-3">
+                              <Check className="w-3.5 h-3.5" /> Fast am Ziel!
+                            </div>
+                            <h3 className="text-3xl font-black text-[#0f172a] mb-2">
+                              Wohin dürfen wir Ihr Angebot senden?
+                            </h3>
+                            <p className="text-slate-500 font-medium text-sm">
+                              Ihre Konfiguration ist gespeichert. Wir berechnen Ihr maßgeschneidertes Festpreisangebot.
+                            </p>
                           </div>
+
+                          {/* Configuration Summary Card */}
+                          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                            <div className="space-y-0.5">
+                              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">
+                                Ihre Auswahl
+                              </span>
+                              <div className="font-bold text-[#0f172a] text-sm">
+                                {currentCategory?.name} {currentSubcategory ? `• ${currentSubcategory.name}` : ""}
+                              </div>
+                            </div>
+                            <button
+                              onClick={handleBack}
+                              className="text-xs font-bold text-primary hover:underline"
+                            >
+                              Angaben anpassen
+                            </button>
+                          </div>
+
+                          {/* Error alert if submission failed */}
+                          {submitStatus && !submitStatus.success && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="p-4 rounded-2xl bg-red-50 border border-red-200 text-red-800 space-y-3"
+                            >
+                              <div className="flex items-start gap-3">
+                                <AlertCircle className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                                <div className="text-sm">
+                                  <span className="font-bold block">Übertragung fehlgeschlagen</span>
+                                  {submitStatus.message}
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap gap-2 pt-1">
+                                <Button
+                                  size="sm"
+                                  onClick={submitInquiry}
+                                  className="bg-red-600 hover:bg-red-700 text-white rounded-full text-xs font-bold"
+                                >
+                                  Erneut versuchen
+                                </Button>
+                                <a
+                                  href={`https://wa.me/4917661951823?text=${encodeURIComponent(`Hallo Empire Premium Bau, ich interessiere mich für ein Angebot zu ${currentCategory?.name || 'Photovoltaik/Wärmepumpe'}. Meine Daten: Name: ${contactInfo.name}, PLZ: ${contactInfo.zip}, Tel: ${contactInfo.phone}`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5" /> Per WhatsApp senden
+                                </a>
+                              </div>
+                            </motion.div>
+                          )}
+
                           <ContactStep
                             info={contactInfo}
-                            onChange={(f, v) => setContactInfo(prev => ({ ...prev, [f]: v }))}
+                            errors={formErrors}
+                            onChange={(f, v) => {
+                              setContactInfo(prev => ({ ...prev, [f]: v }))
+                              if (formErrors[f]) {
+                                setFormErrors(prev => ({ ...prev, [f]: undefined }))
+                              }
+                            }}
                           />
                         </div>
 
-                        <div className="flex items-center justify-between pt-10 border-t border-slate-50 mt-10">
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-slate-100 mt-8 max-w-2xl mx-auto w-full">
                           <motion.button
                             onClick={handleBack}
-                            className="px-8 py-3 rounded-full border border-slate-100 text-sm font-bold text-slate-400"
+                            className="w-full sm:w-auto px-8 py-3.5 rounded-full border border-slate-200 text-sm font-bold text-slate-500 hover:text-[#0f172a] hover:bg-slate-50 transition-all text-center"
                           >
                             Zurück
                           </motion.button>
 
-                          <Button
-                            onClick={submitInquiry}
-                            disabled={submitting || !contactInfo.name || !contactInfo.email || !contactInfo.phone || !contactInfo.zip}
-                            className="rounded-full px-12 py-8 h-auto text-lg font-black bg-[#3b82f6] text-white shadow-soft hover:shadow-elevated transition-colors"
-                          >
-                            {submitting ? (
-                              <span className="flex items-center gap-3">
-                                <RefreshCw className="w-5 h-5 animate-spin" />
-                                Wird gesendet...
-                              </span>
-                            ) : (
-                              "Angebot erhalten"
-                            )}
-                          </Button>
+                          <div className="flex flex-col items-center sm:items-end w-full sm:w-auto gap-2">
+                            <Button
+                              onClick={handleSubmitInquiry}
+                              disabled={submitting}
+                              className="w-full sm:w-auto rounded-full px-10 py-7 h-auto text-base font-black bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                            >
+                              {submitting ? (
+                                <span className="flex items-center gap-3">
+                                  <RefreshCw className="w-5 h-5 animate-spin" />
+                                  Wird gesendet...
+                                </span>
+                              ) : (
+                                <>
+                                  <Lock className="w-4 h-4" />
+                                  <span>Kostenloses Angebot anfordern</span>
+                                  <ArrowRight className="w-5 h-5" />
+                                </>
+                              )}
+                            </Button>
+                            <span className="text-[11px] text-slate-400 font-medium">
+                              ✓ 100% unverbindlich • Keine Werbeanrufe • Antwort in 24h
+                            </span>
+                          </div>
                         </div>
                       </motion.div>
                     )}

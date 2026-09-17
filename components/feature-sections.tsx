@@ -4,6 +4,147 @@ import React, { useRef, useState } from "react"
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion"
 import { Sun, Zap, Thermometer, Battery, ArrowRight, Check, Plug, Shield, Wind, BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ProductDetailModal, type ProductDetailData } from "@/components/product-detail-modal"
+
+const MODULES_PRODUCT: ProductDetailData = {
+  title: "N-Type TOPCon Glas-Glas Solarmodule",
+  subtitle: "Höchste Effizienz & 30 Jahre Garantie",
+  tag: "Photovoltaik",
+  category: "pv",
+  description: "Unsere N-Type TOPCon Doppelglas-Module liefern durch ihre bifaziale Zellarchitektur bis zu 25% mehr Ertrag über die gesamte Lebensdauer. Sie trotzen extremen Witterungsverhältnissen in Norddeutschland und bieten kompromisslose Zuverlässigkeit.",
+  specs: [
+    { label: "Nennleistung", value: "440W – 455W+" },
+    { label: "Leistungsgarantie", value: "30 Jahre linear" },
+    { label: "Bauform", value: "Doppelglas (Bifazial)" },
+    { label: "Hagelschutz", value: "Klasse 4 (40 mm)" },
+  ],
+  highlights: [
+    "Bis zu 25% Mehrertrag durch aktive Vorder- und Rückseite",
+    "Geringste Degradation durch modernste N-Type Zelltechnologie",
+    "Maximaler Brandschutz und Hagelsicherheit durch doppelte Glasschicht",
+    "Elegantes Full-Black Design für perfekte Ästhetik auf jedem Dach",
+  ]
+}
+
+const BATTERY_PRODUCT: ProductDetailData = {
+  title: "Lithium-Eisenphosphat (LFP) Batteriespeicher",
+  subtitle: "Modular & Eigensicher",
+  tag: "Speichersystem",
+  category: "pv",
+  description: "Hochvolt-Speichersysteme mit modernster Lithium-Eisenphosphat-Zellchemie. Sie speichern den überschüssigen Solarstrom des Tages für die Nacht und bieten maximale Sicherheit ohne Brandgefahr.",
+  specs: [
+    { label: "Kapazität", value: "5 kWh bis 30 kWh modular" },
+    { label: "Zellchemie", value: "LiFePO4 (Eigensicher)" },
+    { label: "Zyklenfestigkeit", value: "> 8.000 Zyklen" },
+    { label: "Wirkungsgrad", value: "> 97% Effizienz" },
+  ],
+  highlights: [
+    "100% eigensicher: Kein thermisches Durchgehen möglich",
+    "Jederzeit modular erweiterbar bei steigendem Energiebedarf",
+    "Unterstützt sekundenschnelle Notstrom-Umschaltung",
+    "Live-Status & Überwachung bequem per Smartphone-App",
+  ]
+}
+
+const INVERTER_PRODUCT: ProductDetailData = {
+  title: "3-Phasige Hybrid-Wechselrichter",
+  subtitle: "Intelligentes Herzstück der Energiezentrale",
+  tag: "Wechselrichter",
+  category: "pv",
+  description: "Kombiniert Solar-Wechselrichter, Speicherladegerät und Energiemanagement in einem kompakten Gerät. Optimiert den Eigenverbrauch und steuert Wärmepumpen oder Wallboxen intelligent an.",
+  specs: [
+    { label: "Wirkungsgrad", value: "Bis zu 98,4%" },
+    { label: "MPP-Tracker", value: "2 – 3 unabhängige Tracker" },
+    { label: "Umschaltzeit", value: "< 10 Millisekunden" },
+    { label: "Garantie", value: "10 Jahre Garantie" },
+  ],
+  highlights: [
+    "Intelligentes Schattenmanagement für optimale Teilverschattungs-Erträge",
+    "SG-Ready Schnittstelle zur automatischen Ansteuerung von Wärmepumpen",
+    "Integrierter Überspannungsschutz (AC & DC Typ II)",
+    "Geräuscharme Kühlung ohne störende Lüftergeräusche",
+  ]
+}
+
+const EMERGENCY_PRODUCT: ProductDetailData = {
+  title: "Echte 3-Phasige Notstromversorgung",
+  subtitle: "Volle Versorgung bei Stromausfall",
+  tag: "Notstrom",
+  category: "pv",
+  description: "Bei einem Netzausfall trennt das automatische Umschaltrelais Ihr Gebäude in Millisekunden vom Netz und baut ein autarkes 3-Phasen-Inselnetz auf. Die Solaranlage versorgt Sie auch ohne öffentliches Netz weiter.",
+  specs: [
+    { label: "Phasen", value: "Echte 3 Phasen (400V)" },
+    { label: "Umschaltzeit", value: "Vollautomatisch (< 20 ms)" },
+    { label: "Leistung", value: "Bis 10 kW Dauerlast" },
+    { label: "Funktion", value: "Schwarzstartfähig" },
+  ],
+  highlights: [
+    "Unterbrechungsfreier Weiterbetrieb von Beleuchtung, Kühlschrank & Heizung",
+    "Automatische Netztrennung für maximale Sicherheit",
+    "Solaranlage lädt die Batterie auch während eines Netzausfalls weiter auf",
+    "Voller Schutz für empfindliche Elektrogeräte und Homeoffice-Technik",
+  ]
+}
+
+const HP_INDOOR_PRODUCT: ProductDetailData = {
+  title: "Hydraulische Wärmepumpen-Inneneinheit",
+  subtitle: "Kompakt, Flüsterleise & Hocheffizient",
+  tag: "Wärmepumpe",
+  category: "heatpump",
+  description: "Die kompakte Heizzentrale verbindet Warmwasserspeicher, Hydraulik und intelligente Regelung auf engstem Raum. Sie sorgt für behagliche Wärme und warmes Wasser mit minimalem Stromverbrauch.",
+  specs: [
+    { label: "Speicher", value: "190L – 300L Warmwasserspeicher" },
+    { label: "Schallpegel", value: "< 28 dB(A) (Flüsterleise)" },
+    { label: "Effizienz", value: "A+++ im Heizbetrieb" },
+    { label: "Konnektivität", value: "WLAN / App-Steuerung" },
+  ],
+  highlights: [
+    "Kompakter All-in-One Tower spart wertvollen Platz im Haustechnikraum",
+    "Nahtlose Integration mit Photovoltaik zur Nutzung von Solarüberschuss",
+    "Witterungsgeführte Vorlauftemperatur für minimale Betriebskosten",
+    "Inklusive hocheffizienter Umwälzpumpe und Sicherheitsgruppe",
+  ]
+}
+
+const HP_OUTDOOR_PRODUCT: ProductDetailData = {
+  title: "Flüsterleise Monoblock Außeneinheit",
+  subtitle: "Natürliches Kältemittel R290 (Propan)",
+  tag: "Wärmepumpe",
+  category: "heatpump",
+  description: "Modernste Luft-Wasser-Wärmepumpen mit dem zukunftssicheren Kältemittel R290. Sie erreichen bis zu 75°C Vorlauftemperatur und eignen sich hervorragend sowohl für Neubauten als auch für Bestandsgebäude mit klassischen Heizkörpern.",
+  specs: [
+    { label: "SCOP", value: "Bis zu 5,2 Jahresarbeitszahl" },
+    { label: "Kältemittel", value: "Natürliches R290 (GWP 3)" },
+    { label: "Vorlauf", value: "Bis 75°C Vorlauftemperatur" },
+    { label: "Förderung", value: "Bis zu 70% KfW-Zuschuss" },
+  ],
+  highlights: [
+    "Bis zu 70% staatliche KfW-Förderung (Heizungsförderung 458)",
+    "Flüsterleiser Nachtbetrieb – problemlos für dicht bebaute Wohnsiedlungen",
+    "Volle Heizleistung selbst bei extremen Frosttemperaturen bis -25°C",
+    "Zukunftssicher ohne F-Gase Verbotsproblematik dank natürlichem R290",
+  ]
+}
+
+const HP_SYSTEM_PRODUCT: ProductDetailData = {
+  title: "Komplettes Wärmepumpensystem mit PV-Kopplung",
+  subtitle: "Maximale Unabhängigkeit von Gas & Öl",
+  tag: "Wärmepumpe & Hybrid",
+  category: "heatpump",
+  description: "Die Komplettlösung aus hocheffizienter R290 Wärmepumpe, abgestimmter Hydraulikstation und intelligenter SG-Ready Photovoltaik-Steuerung. Heizen Sie Ihr Gebäude ganzjährig mit umweltfreundlicher Umweltwärme und eigenem Solarstrom.",
+  specs: [
+    { label: "KfW-Zuschuss", value: "Bis zu 70% staatliche Förderung" },
+    { label: "Vorlauftemperatur", value: "Bis 75°C (auch für Bestandsbauten)" },
+    { label: "Arbeitszahl", value: "JAZ bis 4,8+" },
+    { label: "Garantie", value: "Bis zu 10 Jahre Systemgarantie" },
+  ],
+  highlights: [
+    "Komplette Abwicklung von Planung über Förderantrag bis zur fertigen Montage",
+    "Automatische thermische Speicherbeladung bei Solarstromüberschuss",
+    "Demontage und fachgerechte Entsorgung Ihrer alten Öl- oder Gasheizung",
+    "Hydraulischer Abgleich für maximale Fördersätze und optimalen Betrieb",
+  ]
+}
 
 // ─── Shared tab types ─────────────────────────────────────────────────────────
 
@@ -23,6 +164,7 @@ const SOLAR_TABS: { id: SolarTab; label: string; title: string; icon: React.Elem
 export function SolarSection() {
   const ref = useRef<HTMLDivElement>(null)
   const [activeTab, setActiveTab] = useState<SolarTab>("panels")
+  const [modalData, setModalData] = useState<ProductDetailData | null>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
   const opacity = useTransform(scrollYProgress, [0, 0.25, 0.75, 1], [0, 1, 1, 0])
   const y = useTransform(scrollYProgress, [0, 1], [80, -80])
@@ -117,20 +259,22 @@ export function SolarSection() {
             exit={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
           >
-            {activeTab === "panels" && <SolarPanelsContent y={y} />}
-            {activeTab === "battery" && <BatteryContent />}
-            {activeTab === "inverter" && <InverterTabContent />}
-            {activeTab === "emergency" && <EmergencyContent />}
+            {activeTab === "panels" && <SolarPanelsContent y={y} onOpenModal={setModalData} />}
+            {activeTab === "battery" && <BatteryContent onOpenModal={setModalData} />}
+            {activeTab === "inverter" && <InverterTabContent onOpenModal={setModalData} />}
+            {activeTab === "emergency" && <EmergencyContent onOpenModal={setModalData} />}
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      <ProductDetailModal data={modalData} onClose={() => setModalData(null)} />
     </section>
   )
 }
 
 // ─── Solar Panels content ─────────────────────────────────────────────────────
 
-function SolarPanelsContent({ y }: { y: ReturnType<typeof useTransform> }) {
+function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransform>; onOpenModal: (data: ProductDetailData) => void }) {
   return (
     <div className="grid lg:grid-cols-2 gap-16 items-center">
       {/* Text */}
@@ -194,7 +338,10 @@ function SolarPanelsContent({ y }: { y: ReturnType<typeof useTransform> }) {
           viewport={{ once: true }}
           transition={{ delay: 0.35 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(MODULES_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Module entdecken</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -294,7 +441,7 @@ function SolarPanelVisualization() {
 
 // ─── Battery content ─────────────────────────────────────────────────────────
 
-function BatteryContent() {
+function BatteryContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-80px" })
 
@@ -367,7 +514,10 @@ function BatteryContent() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(BATTERY_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Speichersysteme entdecken</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -447,7 +597,7 @@ function BatteryVisualization() {
 
 // ─── Inverter tab content ─────────────────────────────────────────────────────
 
-function InverterTabContent() {
+function InverterTabContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
 
@@ -521,7 +671,10 @@ function InverterTabContent() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(INVERTER_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Wechselrichter entdecken</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -584,7 +737,7 @@ function InverterTabVisualization() {
 
 // ─── Emergency Power tab content ──────────────────────────────────────────────
 
-function EmergencyContent() {
+function EmergencyContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
 
@@ -648,7 +801,10 @@ function EmergencyContent() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.35 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(EMERGENCY_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Mehr über Notstrom erfahren</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -818,6 +974,7 @@ const HEATPUMP_TABS: { id: HeatPumpTab; label: string; title: string; icon: Reac
 export function HeatPumpSection() {
   const ref = useRef<HTMLDivElement>(null)
   const [activeTab, setActiveTab] = useState<HeatPumpTab>("indoor")
+  const [modalData, setModalData] = useState<ProductDetailData | null>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
@@ -907,19 +1064,21 @@ export function HeatPumpSection() {
             exit={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
           >
-            {activeTab === "indoor" && <IndoorUnitContent />}
-            {activeTab === "outdoor" && <OutdoorUnitContent />}
-            {activeTab === "statistics" && <HeatPumpStatisticsContent />}
+            {activeTab === "indoor" && <IndoorUnitContent onOpenModal={setModalData} />}
+            {activeTab === "outdoor" && <OutdoorUnitContent onOpenModal={setModalData} />}
+            {activeTab === "statistics" && <HeatPumpStatisticsContent onOpenModal={setModalData} />}
           </motion.div>
         </AnimatePresence>
       </motion.div>
+
+      <ProductDetailModal data={modalData} onClose={() => setModalData(null)} />
     </section>
   )
 }
 
 // ─── Indoor Unit tab content ──────────────────────────────────────────────────
 
-function IndoorUnitContent() {
+function IndoorUnitContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
 
@@ -981,7 +1140,10 @@ function IndoorUnitContent() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.35 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(HP_INDOOR_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Inneneinheiten ansehen</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -1181,7 +1343,7 @@ function IndoorUnitVisualization() {
 
 // ─── Outdoor Unit tab content ─────────────────────────────────────────────────
 
-function OutdoorUnitContent() {
+function OutdoorUnitContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
 
@@ -1251,7 +1413,10 @@ function OutdoorUnitContent() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.4 }}
         >
-          <Button className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group">
+          <Button 
+            onClick={() => onOpenModal(HP_OUTDOOR_PRODUCT)}
+            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+          >
             <span>Außeneinheiten ansehen</span>
             <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
@@ -1418,7 +1583,7 @@ function OutdoorUnitVisualization() {
 
 // ─── Heat Pump Statistics tab content ─────────────────────────────────────────
 
-function HeatPumpStatisticsContent() {
+function HeatPumpStatisticsContent({ onOpenModal }: { onOpenModal: (data: ProductDetailData) => void }) {
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-60px" })
 
@@ -1581,6 +1746,36 @@ function HeatPumpStatisticsContent() {
             </div>
           </div>
         ))}
+      </motion.div>
+
+      {/* Action CTA card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.6 }}
+        className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 glass rounded-3xl p-6 border border-primary/20 bg-primary/5 shadow-soft"
+      >
+        <div>
+          <h4 className="font-bold text-foreground text-base">Bereit für den Umstieg auf eine moderne Wärmepumpe?</h4>
+          <p className="text-xs text-muted-foreground mt-1">Erhalten Sie bis zu 70% staatliche KfW-Förderung und senken Sie Ihre Heizkosten dauerhaft.</p>
+        </div>
+        <div className="flex items-center gap-3 w-full sm:w-auto shrink-0">
+          <Button
+            onClick={() => onOpenModal(HP_SYSTEM_PRODUCT)}
+            variant="outline"
+            className="rounded-full px-5 py-2.5 text-xs font-semibold cursor-pointer w-full sm:w-auto"
+          >
+            Systemdetails
+          </Button>
+          <Button
+            asChild
+            className="rounded-full px-6 py-2.5 bg-foreground text-background hover:bg-foreground/90 text-xs font-bold cursor-pointer w-full sm:w-auto shadow-sm"
+          >
+            <a href="/#calculator">
+              Angebot berechnen
+            </a>
+          </Button>
+        </div>
       </motion.div>
     </div>
   )

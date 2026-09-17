@@ -41,8 +41,12 @@ export function ContactSection() {
                 </div>
                 <div>
                   <h4 className="font-bold text-foreground mb-1 italic uppercase tracking-tight">Kontakt</h4>
-                  <p className="text-muted-foreground font-medium">+49 17661951823</p>
-                  <p className="text-muted-foreground font-medium">info@empire-premium-bau.de</p>
+                  <a href="tel:+4917661951823" className="text-muted-foreground hover:text-primary font-medium block transition-colors cursor-pointer">
+                    +49 176 61951823
+                  </a>
+                  <a href="mailto:info@empire-premium-bau.de" className="text-muted-foreground hover:text-primary font-medium block transition-colors cursor-pointer">
+                    info@empire-premium-bau.de
+                  </a>
                 </div>
               </div>
 

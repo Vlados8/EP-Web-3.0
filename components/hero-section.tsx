@@ -2,9 +2,10 @@
 
 import React, { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
-import { ArrowDown, Play, Sparkles } from "lucide-react"
+import { ArrowDown, Play, Sparkles, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EnergyHouse3D } from "@/components/energy-house-3d"
+import { VideoModal } from "@/components/video-modal"
 
 function FloatingParticle({ delay, duration, x, y, size }: { 
   delay: number
@@ -52,6 +53,7 @@ export function HeroSection() {
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig)
 
   const [mounted, setMounted] = useState(false)
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -155,36 +157,71 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-12 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
+            className="mt-12 flex flex-col items-center lg:items-start gap-4"
           >
-            <Button 
-              asChild
-              size="lg"
-              className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-10 py-7 text-base font-black uppercase tracking-widest shadow-premium group w-full sm:w-auto"
-            >
-              <a href="#calculator">
-                <span className="relative z-10">Kostenloses Angebot</span>
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-primary to-secondary"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: 0 }}
-                  transition={{ duration: 0.4 }}
-                />
-              </a>
-            </Button>
-            
-            <Button 
-              variant="ghost"
-              size="lg"
-              className="rounded-full px-8 py-7 text-base font-bold group w-full sm:w-auto border border-foreground/5 hover:border-foreground/20"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-primary/20 transition-all border border-white/10 group-hover:scale-110">
-                  <Play className="w-4 h-4 ml-0.5 fill-current" />
+            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start w-full">
+              <Button 
+                asChild
+                size="lg"
+                className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-10 py-7 text-base font-black uppercase tracking-widest shadow-premium group w-full sm:w-auto"
+              >
+                <a 
+                  href="#calculator"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    const el = document.getElementById("calculator")
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth", block: "start" })
+                      window.history.replaceState(null, "", "#calculator")
+                    }
+                  }}
+                >
+                  <span className="relative z-10 flex items-center gap-2">
+                    <span>Kostenloses Angebot</span>
+                    <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full lowercase font-bold tracking-normal">in 2 Min.</span>
+                  </span>
+                  <motion.div 
+                    className="absolute inset-0 bg-gradient-to-r from-primary to-secondary pointer-events-none"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: 0 }}
+                    transition={{ duration: 0.4 }}
+                  />
+                </a>
+              </Button>
+              
+              <Button 
+                variant="ghost"
+                size="lg"
+                onClick={() => setIsVideoModalOpen(true)}
+                className="rounded-full px-8 py-7 text-base font-bold group w-full sm:w-auto border border-foreground/10 hover:border-foreground/25 hover:bg-primary/5 cursor-pointer transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-primary/20 transition-all border border-foreground/10 group-hover:scale-110 shadow-sm">
+                    <Play className="w-4 h-4 ml-0.5 fill-current text-primary" />
+                  </div>
+                  <div className="text-left">
+                    <span className="uppercase tracking-widest text-xs block font-black">System ansehen</span>
+                    <span className="text-[10px] text-muted-foreground font-medium block">Interaktive Simulation</span>
+                  </div>
                 </div>
-                <span className="uppercase tracking-widest text-xs">Video ansehen</span>
-              </div>
-            </Button>
+              </Button>
+            </div>
+
+            {/* Reassuring trust row */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-1.5 text-xs text-muted-foreground font-semibold pt-1">
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                100% kostenlos & unverbindlich
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                Meisterbetrieb Bremen
+              </span>
+              <span className="flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
+                Antwort in 24 Std.
+              </span>
+            </div>
           </motion.div>
 
           {/* Stats */}
@@ -275,6 +312,9 @@ export function HeroSection() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Interactive System Video/Simulation Modal */}
+      <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
     </motion.section>
   )
 }
