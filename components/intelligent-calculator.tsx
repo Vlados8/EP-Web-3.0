@@ -460,18 +460,33 @@ function CategoryCard({ category, selected, onSelect }: {
   )
 }
 
+const ZIP_QUESTION_ID = 9999
+
+const ZIP_QUESTION: ApiQuestion = {
+  id: ZIP_QUESTION_ID,
+  question_text: "Wohnort / PLZ *",
+  type: "input",
+  order_index: 1,
+}
+
 function QuestionStep({
   question,
   value,
   onChange,
   onMultiChange,
-  checkedIds
+  checkedIds,
+  totalQuestions,
+  currentStepIndex,
+  onEnterNext
 }: {
   question: ApiQuestion
   value: string | undefined
   onChange: (ans: AnswerOption) => void
   onMultiChange: (ids: number[], text: string) => void
   checkedIds: number[]
+  totalQuestions?: number
+  currentStepIndex?: number
+  onEnterNext?: () => void
 }) {
   console.log("Rendering Question:", question.id, "Type:", question.type, "Answers:", question.answers?.length)
 
@@ -492,7 +507,7 @@ function QuestionStep({
     >
       <div className="mb-8">
         <div className="inline-flex py-1.5 px-4 bg-[#eff6ff] text-[#3b82f6] text-[11px] font-black uppercase tracking-widest rounded-full border border-[#dbeafe] mb-10">
-          SCHRITT {question.order_index || 1} VON 10
+          SCHRITT {currentStepIndex ?? (question.order_index || 1)} VON {totalQuestions ?? 10}
         </div>
         <h3 className="text-3xl md:text-5xl font-black text-[#0f172a] leading-tight max-w-3xl mx-auto">
           {question.question_text}
@@ -522,14 +537,26 @@ function QuestionStep({
         />
       )}
       {isInput && (
-        <div className="w-full max-w-lg mx-auto">
+        <div className="w-full max-w-lg mx-auto space-y-3">
           <input
             type="text"
+            autoFocus
             value={value || ""}
             onChange={(e) => onChange({ id: -1, answer_text: e.target.value })}
-            placeholder="Ihre Antwort..."
-            className="w-full bg-white border border-slate-100 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-12px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-300 font-medium text-lg"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && value && value.trim()) {
+                e.preventDefault()
+                onEnterNext?.()
+              }
+            }}
+            placeholder={question.id === ZIP_QUESTION_ID ? "z. B. 28207 Bremen" : "Ihre Antwort..."}
+            className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-5 focus:outline-none focus:ring-4 focus:ring-primary/10 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.12),0_0_20px_rgba(59,130,246,0.03)] focus:shadow-[0_20px_60px_-12px_rgba(59,130,246,0.25)] transition-all duration-300 placeholder:text-slate-400 font-bold text-lg text-slate-900"
           />
+          {question.id === ZIP_QUESTION_ID && (
+            <p className="text-xs text-slate-400 font-medium text-center">
+              📍 Bitte geben Sie Ihre Postleitzahl und Ihren Wohnort ein (z. B. 28207 Bremen).
+            </p>
+          )}
         </div>
       )}
       {isSelect && (
@@ -590,8 +617,22 @@ export function IntelligentCalculator() {
         })
         if (!response.ok) throw new Error("API connection failed")
         const json = await response.json()
-        const fetched = json.data?.categories || json.data || json
-        setCategories(fetched.sort((a: any, b: any) => (a.order_index || 0) - (b.order_index || 0)))
+        const fetched: ApiCategory[] = json.data?.categories || json.data || json
+
+        const enhanced = fetched.map((cat) => ({
+          ...cat,
+          subcategories: cat.subcategories?.map((sub) => {
+            if (sub.questions?.some((q) => q.id === ZIP_QUESTION_ID)) return sub
+            const sortedExisting = [...(sub.questions || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
+            const reindexed = sortedExisting.map((q, idx) => ({ ...q, order_index: idx + 2 }))
+            return {
+              ...sub,
+              questions: [ZIP_QUESTION, ...reindexed]
+            }
+          })
+        }))
+
+        setCategories(enhanced.sort((a: any, b: any) => (a.order_index || 0) - (b.order_index || 0)))
       } catch (error) {
         console.error("Error fetching categories:", error)
       } finally {
@@ -606,6 +647,7 @@ export function IntelligentCalculator() {
     setCurrentCategory(cat)
     setHistory(["category"])
     setAnswers({})
+    setContactInfo({ name: "", email: "", phone: "", zip: "", notes: "" })
 
     if (cat.subcategories && cat.subcategories.length > 0) {
       setView("subcategory")
@@ -615,12 +657,20 @@ export function IntelligentCalculator() {
   }
 
   function handleSubcategorySelect(sub: Subcategory) {
-    setCurrentSubcategory(sub)
+    let questions = sub.questions || []
+    if (!questions.some((q) => q.id === ZIP_QUESTION_ID)) {
+      const sortedExisting = [...questions].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
+      const reindexed = sortedExisting.map((q, idx) => ({ ...q, order_index: idx + 2 }))
+      questions = [ZIP_QUESTION, ...reindexed]
+    }
+
+    const updatedSub = { ...sub, questions }
+    setCurrentSubcategory(updatedSub)
     setHistory((prev) => [...prev, "subcategory"])
 
-    if (sub.questions && sub.questions.length > 0) {
+    if (questions.length > 0) {
       setView("question")
-      const firstQ = [...sub.questions].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))[0]
+      const firstQ = [...questions].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))[0]
       setCurrentQuestion(firstQ)
     } else {
       setView("contact")
@@ -630,6 +680,13 @@ export function IntelligentCalculator() {
   function handleAnswer(q: ApiQuestion, val: string, answerId?: number, nextId?: number | null) {
     const newAnswers = { ...answers, [q.id]: { value: val, answerId } }
     setAnswers(newAnswers)
+
+    if (q.id === ZIP_QUESTION_ID) {
+      setContactInfo((prev) => ({ ...prev, zip: val }))
+      if (formErrors.zip) {
+        setFormErrors((prev) => ({ ...prev, zip: undefined }))
+      }
+    }
 
     // DON'T auto-advance for range/input types
     const isManual = q.type === "range" || q.type === "slider" || q.type === "input" || q.type === "text" || q.type === "number"
@@ -664,6 +721,11 @@ export function IntelligentCalculator() {
         ...prev,
         [q.id]: { value: defVal }
       }))
+    }
+
+    if (q.id === ZIP_QUESTION_ID) {
+      const zipVal = answers[ZIP_QUESTION_ID]?.value || ""
+      setContactInfo((prev) => ({ ...prev, zip: zipVal }))
     }
 
     setHistory((prev) => [...prev, { view: "question", qId: q.id }])
@@ -741,10 +803,12 @@ export function IntelligentCalculator() {
       location: contactInfo.zip,
       notes: contactInfo.notes,
       source_website: typeof window !== "undefined" ? window.location.hostname : "imperia-premium.de",
-      answers: Object.entries(answers).map(([qId, ans]) => ({
-        question_id: parseInt(qId),
-        answer_value: ans.value
-      }))
+      answers: Object.entries(answers)
+        .filter(([qId]) => parseInt(qId) > 0 && parseInt(qId) !== ZIP_QUESTION_ID)
+        .map(([qId, ans]) => ({
+          question_id: parseInt(qId),
+          answer_value: ans.value
+        }))
     }
 
     try {
@@ -838,9 +902,27 @@ export function IntelligentCalculator() {
             <h2 className="text-3xl md:text-5xl font-black text-[#0f172a] tracking-tight">
               Ihr kostenloses Angebot in 2 Minuten
             </h2>
-            <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
-              <span className="font-bold text-[#0f172a]">Schritt 1 von 3:</span> Wählen Sie Ihren Bereich – Photovoltaik oder Wärmepumpe. Beantworten Sie wenige Fragen für ein maßgeschneidertes, unverbindliches Festpreisangebot.
-            </p>
+            {/* Steps Guide */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto pt-2 text-left">
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-primary/30 shadow-sm">
+                <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center shrink-0">1</span>
+                <span className="text-xs sm:text-sm font-medium text-[#0f172a]">
+                  <strong className="font-bold text-primary">Schritt 1:</strong> Wählen Sie Photovoltaik oder Wärmepumpe
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm">
+                <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center shrink-0">2</span>
+                <span className="text-xs sm:text-sm font-medium text-slate-700">
+                  <strong className="font-bold text-slate-900">Schritt 2:</strong> Tragen Sie Ihre Wünsche & Angaben ein
+                </span>
+              </div>
+              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm">
+                <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center shrink-0">3</span>
+                <span className="text-xs sm:text-sm font-medium text-slate-700">
+                  <strong className="font-bold text-slate-900">Schritt 3:</strong> Erhalten Sie Ihr Angebot in nur 2 Minuten
+                </span>
+              </div>
+            </div>
             {/* Trust Badges */}
             <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-2">
               <span className="px-3.5 py-1.5 rounded-full bg-slate-100 text-slate-700 text-xs font-bold border border-slate-200 shadow-sm">
@@ -880,39 +962,45 @@ export function IntelligentCalculator() {
                     <RefreshCw className="w-8 h-8 animate-spin text-primary/40" />
                   </div>
                 ) : (
-                  categories.slice(0, 2).map((cat, idx) => (
-                    <motion.button
-                      key={cat.id}
-                      onClick={() => handleCategorySelect(cat)}
-                      whileHover={{
-                        y: -8,
-                        boxShadow: "0 20px 50px -12px rgba(0,0,0,0.3), 0 0 30px rgba(59,130,246,0.1)"
-                      }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group relative flex flex-col items-center bg-white p-12 rounded-3xl shadow-[0_10px_40px_0px_rgba(0,0,0,0.25),0_0_20px_rgba(59,130,246,0.03)] border border-slate-100 transition-all duration-500 hover:border-primary/20 overflow-hidden w-full"
-                    >
-                      <div className="w-24 h-24 rounded-2xl bg-slate-50 border border-slate-100 mb-8 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
-                        {idx === 0
-                          ? <Sun className="w-12 h-12 text-[#0f172a]" />
-                          : <Thermometer className="w-12 h-12 text-[#0f172a]" />
-                        }
-                      </div>
+                  categories.slice(0, 2).map((cat, idx) => {
+                    const isPv = idx === 0 || cat.name.toLowerCase().includes("pv") || cat.name.toLowerCase().includes("solar") || cat.name.toLowerCase().includes("photovoltaik")
+                    const title = isPv ? "Angebot Photovoltaik (PV)" : "Angebot Wärmepumpe (WP)"
+                    const desc = isPv 
+                      ? "Solaranlage konfigurieren und in 2 Minuten Angebot erhalten." 
+                      : "Wärmepumpe konfigurieren und in 2 Minuten Angebot erhalten."
 
-                      <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight">{cat.name}</h3>
-                      <p className="text-sm text-slate-500 mb-8 font-medium">
-                        {cat.name.toLowerCase().includes("pv") || cat.name.toLowerCase().includes("solar")
-                          ? "Solaranlage konfigurieren & kostenloses Angebot erhalten"
-                          : "Wärmepumpensystem berechnen & kostenloses Angebot erhalten"}
-                      </p>
-
-                      <div
-                        className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                    return (
+                      <motion.button
+                        key={cat.id}
+                        onClick={() => handleCategorySelect(cat)}
+                        whileHover={{
+                          y: -8,
+                          boxShadow: "0 20px 50px -12px rgba(0,0,0,0.3), 0 0 30px rgba(59,130,246,0.1)"
+                        }}
+                        whileTap={{ scale: 0.98 }}
+                        className="group relative flex flex-col items-center bg-white p-12 rounded-3xl shadow-[0_10px_40px_0px_rgba(0,0,0,0.25),0_0_20px_rgba(59,130,246,0.03)] border border-slate-100 transition-all duration-500 hover:border-primary/20 overflow-hidden w-full"
                       >
-                        Angebot berechnen
-                        <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </motion.button>
-                  ))
+                        <div className="w-24 h-24 rounded-2xl bg-slate-50 border border-slate-100 mb-8 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] group-hover:bg-white group-hover:shadow-soft transition-all duration-500">
+                          {isPv
+                            ? <Sun className="w-12 h-12 text-[#0f172a]" />
+                            : <Thermometer className="w-12 h-12 text-[#0f172a]" />
+                          }
+                        </div>
+
+                        <h3 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] mb-2 tracking-tight text-center">{title}</h3>
+                        <p className="text-sm text-slate-500 mb-8 font-medium text-center">
+                          {desc}
+                        </p>
+
+                        <div
+                          className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                        >
+                          Angebot berechnen
+                          <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </motion.button>
+                    )
+                  })
                 )}
               </motion.div>
             ) : (
@@ -983,55 +1071,64 @@ export function IntelligentCalculator() {
                     )}
 
                     {/* Question selection */}
-                    {view === "question" && currentQuestion && (
-                      <motion.div key={`q-${currentQuestion.id}`} className="flex-1 flex flex-col justify-between">
-                        <QuestionStep
-                          question={currentQuestion}
-                          value={answers[currentQuestion.id]?.value}
-                          checkedIds={answers[currentQuestion.id]?.checkedIds || []}
-                          onChange={(ans) => handleAnswer(currentQuestion, ans.answer_text, ans.id, ans.next_question_id)}
-                          onMultiChange={(ids, text) => handleMultiAnswer(currentQuestion, ids, text)}
-                        />
+                    {view === "question" && currentQuestion && (() => {
+                      const sortedQs = [...(currentSubcategory?.questions || [])].sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
+                      const currentStepIndex = sortedQs.findIndex(q => q.id === currentQuestion.id) + 1
+                      const totalQuestions = sortedQs.length
 
-                        {/* Navigation */}
-                        <div className="flex items-center justify-between pt-10 border-t border-slate-50 mt-auto">
-                          <motion.button
-                            whileHover={{ scale: 1.03 }}
-                            whileTap={{ scale: 0.97 }}
-                            onClick={handleBack}
-                            className="group flex items-center gap-2 px-8 py-3 rounded-full border border-slate-100 text-sm font-bold text-slate-400 hover:text-[#0f172a] transition-all"
-                          >
-                            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                            Zurück
-                          </motion.button>
+                      return (
+                        <motion.div key={`q-${currentQuestion.id}`} className="flex-1 flex flex-col justify-between">
+                          <QuestionStep
+                            question={currentQuestion}
+                            value={answers[currentQuestion.id]?.value}
+                            checkedIds={answers[currentQuestion.id]?.checkedIds || []}
+                            onChange={(ans) => handleAnswer(currentQuestion, ans.answer_text, ans.id, ans.next_question_id)}
+                            onMultiChange={(ids, text) => handleMultiAnswer(currentQuestion, ids, text)}
+                            currentStepIndex={currentStepIndex}
+                            totalQuestions={totalQuestions}
+                            onEnterNext={() => handleManualNext(currentQuestion)}
+                          />
 
-                          {(currentQuestion.type === "checkbox" || currentQuestion.type === "multi" || currentQuestion.type === "range" || currentQuestion.type === "slider" || currentQuestion.type === "input" || currentQuestion.type === "text" || currentQuestion.type === "number") && (
+                          {/* Navigation */}
+                          <div className="flex items-center justify-between pt-10 border-t border-slate-50 mt-auto">
                             <motion.button
                               whileHover={{ scale: 1.03 }}
                               whileTap={{ scale: 0.97 }}
-                              onClick={() => {
-                                if (currentQuestion.type === "checkbox" || currentQuestion.type === "multi") {
-                                  handleMultiNext(currentQuestion)
-                                } else {
-                                  handleManualNext(currentQuestion)
-                                }
-                              }}
-                              disabled={
-                                (currentQuestion.type === "checkbox" || currentQuestion.type === "multi")
-                                  ? !answers[currentQuestion.id]?.checkedIds?.length
-                                  : (currentQuestion.type === "range" || currentQuestion.type === "slider")
-                                    ? false // Always valid with default value
-                                    : !answers[currentQuestion.id]?.value
-                              }
-                              className="flex items-center gap-2 px-10 py-3 rounded-full text-sm font-bold bg-[#3b82f6] text-white disabled:opacity-50 shadow-[0_20px_40px_-12px_rgba(59,130,246,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)] transition-all cursor-pointer disabled:cursor-not-allowed"
+                              onClick={handleBack}
+                              className="group flex items-center gap-2 px-8 py-3 rounded-full border border-slate-100 text-sm font-bold text-slate-400 hover:text-[#0f172a] transition-all"
                             >
-                              Weiter
-                              <ChevronRight className="w-5 h-5" />
+                              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                              Zurück
                             </motion.button>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
+
+                            {(currentQuestion.type === "checkbox" || currentQuestion.type === "multi" || currentQuestion.type === "range" || currentQuestion.type === "slider" || currentQuestion.type === "input" || currentQuestion.type === "text" || currentQuestion.type === "number") && (
+                              <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.97 }}
+                                onClick={() => {
+                                  if (currentQuestion.type === "checkbox" || currentQuestion.type === "multi") {
+                                    handleMultiNext(currentQuestion)
+                                  } else {
+                                    handleManualNext(currentQuestion)
+                                  }
+                                }}
+                                disabled={
+                                  (currentQuestion.type === "checkbox" || currentQuestion.type === "multi")
+                                    ? !answers[currentQuestion.id]?.checkedIds?.length
+                                    : (currentQuestion.type === "range" || currentQuestion.type === "slider")
+                                      ? false // Always valid with default value
+                                      : !answers[currentQuestion.id]?.value?.trim()
+                                }
+                                className="flex items-center gap-2 px-10 py-3 rounded-full text-sm font-bold bg-[#3b82f6] text-white disabled:opacity-50 shadow-[0_20px_40px_-12px_rgba(59,130,246,0.3)] hover:shadow-[0_25px_50px_-12px_rgba(59,130,246,0.4)] transition-all cursor-pointer disabled:cursor-not-allowed"
+                              >
+                                Weiter
+                                <ChevronRight className="w-5 h-5" />
+                              </motion.button>
+                            )}
+                          </div>
+                        </motion.div>
+                      )
+                    })()}
 
                     {/* Contact form */}
                     {view === "contact" && (
@@ -1106,6 +1203,12 @@ export function IntelligentCalculator() {
                             errors={formErrors}
                             onChange={(f, v) => {
                               setContactInfo(prev => ({ ...prev, [f]: v }))
+                              if (f === "zip") {
+                                setAnswers(prev => ({
+                                  ...prev,
+                                  [ZIP_QUESTION_ID]: { value: v }
+                                }))
+                              }
                               if (formErrors[f]) {
                                 setFormErrors(prev => ({ ...prev, [f]: undefined }))
                               }
@@ -1135,13 +1238,13 @@ export function IntelligentCalculator() {
                               ) : (
                                 <>
                                   <Lock className="w-4 h-4" />
-                                  <span>Kostenloses Angebot anfordern</span>
+                                  <span>Unverbindliches Angebot anfordern</span>
                                   <ArrowRight className="w-5 h-5" />
                                 </>
                               )}
                             </Button>
                             <span className="text-[11px] text-slate-400 font-medium">
-                              ✓ 100% unverbindlich • Keine Werbeanrufe • Antwort in 24h
+                              ✓ 100% kostenlos. Keine Werbeanrufe.
                             </span>
                           </div>
                         </div>

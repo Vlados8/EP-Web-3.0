@@ -6,11 +6,9 @@ import { SolarSection, HeatPumpSection } from "@/components/feature-sections"
 import { CombinedSolutionSection } from "@/components/combined-solution-section"
 import { StatsSection } from "@/components/stats-section"
 import { ProcessSection } from "@/components/process-section"
-import { EconomicsSection } from "@/components/economics-section"
 import { GeographySection } from "@/components/geography-section"
 import { ProjectGallery } from "@/components/project-gallery"
 import { IntelligentCalculator } from "@/components/intelligent-calculator"
-import { TestimonialsSection } from "@/components/testimonials-section"
 import { WhyUsSection } from "@/components/why-us-section"
 import { FAQSection } from "@/components/faq-section"
 import { ContactSection } from "@/components/contact-section"
@@ -28,10 +26,8 @@ export default function Home() {
       <CombinedSolutionSection />
       <ProcessSection />
       <StatsSection />
-      <EconomicsSection />
       <GeographySection />
       <ProjectGallery />
-      <TestimonialsSection />
       <WhyUsSection />
       <FAQSection />
       <ContactSection />

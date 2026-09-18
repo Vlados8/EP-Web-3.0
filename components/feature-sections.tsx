@@ -1,10 +1,66 @@
 "use client"
 
 import React, { useRef, useState } from "react"
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from "framer-motion"
-import { Sun, Zap, Thermometer, Battery, ArrowRight, Check, Plug, Shield, Wind, BarChart3 } from "lucide-react"
+import { motion, useScroll, useTransform, useInView, AnimatePresence, type MotionValue } from "framer-motion"
+import Image from "next/image"
+import { Sun, Zap, Thermometer, Battery, ArrowRight, Check, Plug, Shield, Wind, BarChart3, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductDetailModal, type ProductDetailData } from "@/components/product-detail-modal"
+import { FeaturePhotoCarousel, type PhotoSlide } from "@/components/feature-photo-carousel"
+
+const SOLAR_SLIDES: PhotoSlide[] = [
+  {
+    src: "/solar_slide_1.jpg",
+    alt: "Modernes Einfamilienhaus mit vollflächiger Photovoltaikanlage in Bremen",
+    tag: "Photovoltaik Bremen",
+    title: "Einfamilienhaus Vollbelegung",
+    badge: "0% MwSt. • Förderbar",
+    stat: "Bis 80% Autarkie",
+  },
+  {
+    src: "/solar_slide_2.jpg",
+    alt: "Luftaufnahme Photovoltaik Aufdach-Installation Norddeutschland",
+    tag: "Region Bremen + 100 km",
+    title: "N-Type Doppelglas Module",
+    badge: "20 J. Einspeisevergütung",
+    stat: "Schlüsselfertig",
+  },
+  {
+    src: "/solar_slide_3.jpg",
+    alt: "Elegantes Full-Black Photovoltaik-Dach ohne sichtbare Rahmen",
+    tag: "Meisterbetrieb vor Ort",
+    title: "Full-Black Premium Optik",
+    badge: "30 Jahre Garantie",
+    stat: "Maximaler Ertrag",
+  },
+]
+
+const HEATPUMP_SLIDES: PhotoSlide[] = [
+  {
+    src: "/heatpump_buderus_1.jpg",
+    alt: "Moderne Luft-Wasser-Wärmepumpe mit Innen- und Außeneinheit",
+    tag: "Premium-Heizsystem",
+    title: "Luft-Wasser-Wärmepumpe",
+    badge: "Bis zu 70% KfW-Förderung",
+    stat: "Silent PLUS (nur 25 dB)",
+  },
+  {
+    src: "/heatpump_buderus_2.jpg",
+    alt: "Moderne Wärmepumpe installiert vor Klinker-Einfamilienhaus",
+    tag: "Modernisierung & Altbau",
+    title: "Effiziente Außenaufstellung",
+    badge: "Bis 21.000 € staatlicher Zuschuss",
+    stat: "Bis 75°C Vorlauftemperatur",
+  },
+  {
+    src: "/heatpump_buderus_3.png",
+    alt: "Moderne Wärmepumpe Außeneinheit auf Terrasse installiert",
+    tag: "Fachgerechte Montage",
+    title: "Heizen ohne Öl & Gas",
+    badge: "Meisterbetrieb Installation",
+    stat: "A+++ Effizienz & R290",
+  },
+]
 
 const MODULES_PRODUCT: ProductDetailData = {
   title: "N-Type TOPCon Glas-Glas Solarmodule",
@@ -274,7 +330,7 @@ export function SolarSection() {
 
 // ─── Solar Panels content ─────────────────────────────────────────────────────
 
-function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransform>; onOpenModal: (data: ProductDetailData) => void }) {
+function SolarPanelsContent({ y, onOpenModal }: { y: MotionValue<number>; onOpenModal: (data: ProductDetailData) => void }) {
   return (
     <div className="grid lg:grid-cols-2 gap-16 items-center">
       {/* Text */}
@@ -286,8 +342,8 @@ function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransf
           transition={{ delay: 0.05 }}
           className="text-lg text-muted-foreground leading-relaxed mb-8 text-pretty font-medium"
         >
-          Unsere Experten installieren moderne Photovoltaiksysteme in der gesamten Region rund um Bremen. 
-          Wir bieten branchenführende Effizienz mit einer eleganten Ästhetik für Ihr Zuhause oder Gewerbe.
+          <strong className="text-foreground font-black">Förderbar & steuerfrei:</strong> Sparen Sie Kosten und erzeugen Sie Ihren eigenen Strom. 
+          Mit einer modernen Photovoltaikanlage machen Sie sich in Bremen und Umgebung dauerhaft unabhängig von Energieversorgern und steigenden Strompreisen.
         </motion.p>
 
         <motion.div
@@ -295,17 +351,17 @@ function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransf
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.15 }}
-          className="grid grid-cols-2 gap-5 mb-10"
+          className="grid grid-cols-2 gap-4 sm:gap-5 mb-10"
         >
           {[
-            { value: "22,8%", label: "Zellwirkungsgrad" },
-            { value: "400 W", label: "Pro Modul" },
-            { value: "-0,26%", label: "Temp. Koeffizient" },
-            { value: "25 J", label: "Leistungsgarantie" },
+            { value: "0% MwSt.", label: "Dauerhaft steuerfrei (19% Ersparnis)" },
+            { value: "Bis 80%", label: "Stromkosten im Haushalt senken" },
+            { value: "20 Jahre", label: "Staatliche EEG-Einspeisevergütung" },
+            { value: "30 Jahre", label: "Lineare Leistungsgarantie" },
           ].map((stat, i) => (
-            <div key={i} className="glass rounded-2xl p-4 shadow-micro">
-              <div className="text-2xl font-semibold text-foreground">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            <div key={i} className="glass rounded-2xl p-4 shadow-micro border border-primary/15">
+              <div className="text-2xl font-black text-foreground tracking-tight">{stat.value}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">{stat.label}</div>
             </div>
           ))}
         </motion.div>
@@ -315,17 +371,17 @@ function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransf
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.25 }}
-          className="space-y-3 mb-8"
+          className="space-y-3.5 mb-8"
         >
           {[
-            "Antireflexionsbeschichtung aus gehärtetem Glas",
-            "IP68 wetterfeste Anschlussdose",
-            "Bifaziale Lichtaufnahme bei ausgewählten Modellen",
-            "Lückenloses Rahmensystem für nahtlose Dachlinien",
+            "Dauerhaft 0% Mehrwertsteuer auf Solaranlage & Speicher sparen",
+            "Strom für nur ca. 8–10 ct/kWh selbst erzeugen statt 38+ ct/kWh zahlen",
+            "20 Jahre staatlich garantierte Einspeisevergütung nach EEG",
+            "Schlüsselfertige Montage & Netzanschluss vom Meisterbetrieb Bremen",
           ].map((f, i) => (
-            <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-              <div className="w-5 h-5 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
-                <Check className="w-3 h-3 text-accent" />
+            <li key={i} className="flex items-center gap-3 text-sm font-medium text-foreground/90">
+              <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
+                <Check className="w-3 h-3 text-primary" />
               </div>
               {f}
             </li>
@@ -337,103 +393,36 @@ function SolarPanelsContent({ y, onOpenModal }: { y: ReturnType<typeof useTransf
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.35 }}
+          className="flex flex-wrap items-center gap-3"
         >
           <Button 
-            onClick={() => onOpenModal(MODULES_PRODUCT)}
-            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+            asChild
+            className="rounded-full px-7 py-6 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer shadow-md font-bold"
           >
-            <span>Module entdecken</span>
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            <a href="#calculator" className="flex items-center gap-2">
+              <span>Photovoltaik-Angebot anfragen</span>
+              <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </Button>
+          <Button 
+            variant="ghost"
+            onClick={() => onOpenModal(MODULES_PRODUCT)}
+            className="rounded-full px-5 py-6 text-xs font-bold text-muted-foreground hover:text-foreground"
+          >
+            Technische Daten
           </Button>
         </motion.div>
       </div>
 
-      {/* Visualization */}
+      {/* Real Photo Slider Visualization */}
       <motion.div style={{ y }} className="relative">
-        <div className="relative aspect-square max-w-lg mx-auto">
-          <motion.div
-            className="absolute inset-0 rounded-3xl overflow-hidden"
-            initial={{ opacity: 0, scale: 0.92 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <SolarPanelVisualization />
-          </motion.div>
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
-function SolarPanelVisualization() {
-  return (
-    <div className="relative w-full h-full bg-gradient-to-br from-muted to-background rounded-3xl flex items-center justify-center overflow-hidden">
-      <motion.div
-        className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full bg-accent/30 blur-3xl"
-        animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
-
-      <svg viewBox="0 0 300 300" className="w-3/4 h-3/4">
-        <defs>
-          <linearGradient id="panelBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#1e3a5f" />
-            <stop offset="100%" stopColor="#0f172a" />
-          </linearGradient>
-          <filter id="panelGlow">
-            <feDropShadow dx="0" dy="4" stdDeviation="8" floodOpacity="0.2" />
-          </filter>
-        </defs>
-
-        <g transform="translate(50, 80)" filter="url(#panelGlow)">
-          {Array.from({ length: 4 }).map((_, row) =>
-            Array.from({ length: 4 }).map((_, col) => (
-              <motion.rect
-                key={`${row}-${col}`}
-                x={col * 50} y={row * 35} width="45" height="30" rx="2"
-                fill="url(#panelBlue)"
-                initial={{ opacity: 0.7 }}
-                animate={{ opacity: [0.7, 1, 0.7] }}
-                transition={{ duration: 2, delay: (row + col) * 0.2, repeat: Infinity }}
-              />
-            ))
-          )}
-          {Array.from({ length: 4 }).map((_, row) =>
-            Array.from({ length: 4 }).map((_, col) => (
-              <rect
-                key={`ref-${row}-${col}`}
-                x={col * 50 + 2} y={row * 35 + 2} width="12" height="3" rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-            ))
-          )}
-        </g>
-
-        {Array.from({ length: 5 }).map((_, i) => (
-          <motion.circle
-            key={i} r="3" fill="#22c55e"
-            initial={{ cx: 100 + i * 25, cy: 0, opacity: 0 }}
-            animate={{ cy: [0, 300], opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 3, delay: i * 0.4, repeat: Infinity, ease: "linear" }}
-          />
-        ))}
-      </svg>
-
-      <motion.div
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 glass rounded-full px-4 py-2 shadow-soft"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
-      >
-        <div className="flex items-center gap-2">
-          <motion.span
-            className="w-2 h-2 rounded-full bg-primary"
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-          <span className="text-sm font-medium">12.4 kWh Erzeugung</span>
-        </div>
+        <FeaturePhotoCarousel
+          slides={SOLAR_SLIDES}
+          badgeIcon={Sun}
+          badgeIconColor="text-amber-400"
+          accentColorClass="text-amber-400"
+          autoPlayInterval={4800}
+        />
       </motion.div>
     </div>
   )
@@ -1091,43 +1080,44 @@ function IndoorUnitContent({ onOpenModal }: { onOpenModal: (data: ProductDetailD
           transition={{ delay: 0.05 }}
           className="text-lg text-muted-foreground leading-relaxed mb-8 text-pretty font-medium"
         >
-          Moderne Wärmepumpen sorgen für effizientes Heizen und Kühlen. Wir bieten komplette Lösungen 
-          inklusive Planung und Installation in Norddeutschland und im Umkreis von 100 km.
+          <strong className="text-foreground font-black">Bis zu 70% staatliche KfW-Förderung:</strong> Tauschen Sie Ihre alte Gas- oder Ölheizung gegen eine moderne Wärmepumpe und sichern Sie sich bis zu 21.000 € Zuschuss vom Staat. 
+          Senken Sie Ihre Heizkosten um bis zu 65% und heizen Sie 100% zukunftssicher, unabhängig von Öl und Gas.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.15 }}
-          className="grid grid-cols-2 gap-5 mb-10"
+          className="grid grid-cols-2 gap-4 sm:gap-5 mb-10"
         >
           {[
-            { value: "25dB", label: "Geräuschpegel" },
-            { value: "±0,5°C", label: "Präzision" },
-            { value: "WiFi", label: "Steuerung" },
-            { value: "10 J", label: "Garantie" },
+            { value: "Bis 70%", label: "Staatlicher KfW-Zuschuss (bis 21.000 €)" },
+            { value: "-65%", label: "Heizkosten dauerhaft einsparen" },
+            { value: "A+++", label: "Höchste Energieeffizienzklasse" },
+            { value: "100%", label: "Unabhängig von Öl & Gaspreisen" },
           ].map((stat, i) => (
-            <div key={i} className="glass rounded-2xl p-4 shadow-micro">
-              <div className="text-2xl font-semibold text-foreground">{stat.value}</div>
-              <div className="text-sm text-muted-foreground">{stat.label}</div>
+            <div key={i} className="glass rounded-2xl p-4 shadow-micro border border-primary/15">
+              <div className="text-2xl font-black text-foreground tracking-tight">{stat.value}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">{stat.label}</div>
             </div>
           ))}
         </motion.div>
 
         <motion.ul
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.25 }}
-          className="space-y-3 mb-8"
+          className="space-y-3.5 mb-8"
         >
           {[
-            "Extrem leises Gebläse mit variabler Geschwindigkeit — nur 25dB",
-            "Integrierte Feuchtigkeitskontrolle und Luftqualitätssensoren",
-            "Kompaktes Design fügt sich nahtlos in jede Inneneinrichtung ein",
-            "Zonenbasierte Zeitplanung mit App-Integration für Smart Homes",
+            "Bis zu 70% Förderung (KfW 458): Grundförderung + Klimabonus gesichert",
+            "Heizkosten drastisch senken: Nutzt bis zu 75% kostenlose Umweltwärme",
+            "Nie wieder teures Öl oder Gas kaufen – dauerhafter Schutz vor CO2-Steuern",
+            "Heizen im Winter & Kühlen im Sommer bei flüsterleisem Betrieb (nur 25 dB)",
           ].map((f, i) => (
-            <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground">
-              <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <li key={i} className="flex items-center gap-3 text-sm font-medium text-foreground/90">
+              <div className="w-5 h-5 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
                 <Check className="w-3 h-3 text-primary" />
               </div>
               {f}
@@ -1139,204 +1129,42 @@ function IndoorUnitContent({ onOpenModal }: { onOpenModal: (data: ProductDetailD
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: 0.35 }}
+          className="flex flex-wrap items-center gap-3"
         >
           <Button 
-            onClick={() => onOpenModal(HP_INDOOR_PRODUCT)}
-            className="rounded-full px-6 py-3 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer"
+            asChild
+            className="rounded-full px-7 py-6 bg-foreground text-background hover:bg-foreground/90 group cursor-pointer shadow-md font-bold"
           >
-            <span>Inneneinheiten ansehen</span>
-            <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            <a href="#calculator" className="flex items-center gap-2">
+              <span>Wärmepumpen-Angebot anfragen</span>
+              <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </Button>
+          <Button 
+            variant="ghost"
+            onClick={() => onOpenModal(HP_INDOOR_PRODUCT)}
+            className="rounded-full px-5 py-6 text-xs font-bold text-muted-foreground hover:text-foreground"
+          >
+            Technische Daten
           </Button>
         </motion.div>
       </div>
 
+      {/* Real Photo Slider Visualization */}
       <motion.div
         initial={{ opacity: 0, x: 40 }}
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.7 }}
+        className="relative"
       >
-        <IndoorUnitVisualization />
-      </motion.div>
-    </div>
-  )
-}
-
-function IndoorUnitVisualization() {
-  return (
-    <div className="relative aspect-square max-w-lg mx-auto flex items-center justify-center">
-      {/* Ambient glow */}
-      <motion.div
-        className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/10 to-secondary/5 blur-3xl"
-        animate={{ scale: [1, 1.12, 1], opacity: [0.2, 0.4, 0.2] }}
-        transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
-      />
-
-      {/* Floating air particles */}
-      {Array.from({ length: 5 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-1.5 h-1.5 rounded-full bg-primary/20"
-          style={{ left: `${48 + (i % 3) * 6}%`, top: `${70 + (i % 2) * 8}%` }}
-          animate={{
-            y: [-5, -50, -5],
-            opacity: [0, 0.6, 0],
-            scale: [0.3, 0.7, 0.3],
-          }}
-          transition={{ duration: 3.5, repeat: Infinity, delay: i * 0.5, ease: "easeOut" }}
+        <FeaturePhotoCarousel
+          slides={HEATPUMP_SLIDES}
+          badgeIcon={Thermometer}
+          badgeIconColor="text-primary"
+          accentColorClass="text-primary"
+          autoPlayInterval={4800}
         />
-      ))}
-
-      <svg viewBox="0 0 280 360" className="w-full h-full relative z-10">
-        <defs>
-          {/* Premium white gradient - Bosch style */}
-          <linearGradient id="boschIndoorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#fafbfc" />
-            <stop offset="50%" stopColor="#f5f6f7" />
-            <stop offset="100%" stopColor="#eff0f2" />
-          </linearGradient>
-          {/* Control panel dark circle */}
-          <radialGradient id="controlPanelGrad">
-            <stop offset="0%" stopColor="#1e293b" />
-            <stop offset="100%" stopColor="#0f172a" />
-          </radialGradient>
-          {/* Subtle depth filter */}
-          <filter id="boschIndoorDepth" x="-15%" y="-15%" width="130%" height="130%">
-            <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity="0.06" />
-          </filter>
-        </defs>
-
-        {/* Ground shadow */}
-        <ellipse cx="140" cy="340" rx="55" ry="8" fill="rgba(0,0,0,0.07)" />
-
-        {/* Main unit body - Tall vertical Bosch-style design */}
-        <g filter="url(#boschIndoorDepth)">
-          {/* Upper section */}
-          <rect x="60" y="30" width="160" height="140" rx="16" fill="url(#boschIndoorGrad)" stroke="#e5e7eb" strokeWidth="1.5" />
-          {/* Lower section */}
-          <rect x="60" y="160" width="160" height="140" rx="16" fill="url(#boschIndoorGrad)" stroke="#e5e7eb" strokeWidth="1.5" />
-
-          {/* Top edge highlight */}
-          <rect x="65" y="35" width="150" height="2.5" rx="1.5" fill="rgba(255,255,255,0.85)" />
-        </g>
-
-        {/* Vertical panel lines for texture - upper section */}
-        <g opacity="0.4" stroke="#d1d5db" strokeWidth="0.8">
-          {[85, 115, 145, 175].map((x) => (
-            <line key={`v-upper-${x}`} x1={x} y1="40" x2={x} y2="165" />
-          ))}
-        </g>
-
-        {/* Vertical panel lines for texture - lower section */}
-        <g opacity="0.4" stroke="#d1d5db" strokeWidth="0.8">
-          {[85, 115, 145, 175].map((x) => (
-            <line key={`v-lower-${x}`} x1={x} y1="170" x2={x} y2="295" />
-          ))}
-        </g>
-
-        {/* Control panel circle - upper section center */}
-        <g transform="translate(140, 85)">
-          {/* Outer ring */}
-          <circle cx="0" cy="0" r="28" fill="url(#controlPanelGrad)" stroke="#334155" strokeWidth="1.5" />
-
-          {/* Digital display area */}
-          <circle cx="0" cy="0" r="22" fill="#0f172a" />
-
-          {/* Temperature display */}
-          <motion.text
-            x="0" y="5" textAnchor="middle" fill="#22c55e" fontSize="14" fontWeight="700" fontFamily="monospace"
-            animate={{ opacity: [0.7, 1, 0.7] }}
-            transition={{ duration: 1.8, repeat: Infinity }}
-          >
-            22°C
-          </motion.text>
-
-          {/* Status indicator dot */}
-          <motion.circle
-            cx="0" cy="0" r="24.5" fill="none" stroke="#22c55e" strokeWidth="1.2"
-            animate={{ opacity: [0.2, 0.6, 0.2] }}
-            transition={{ duration: 2.2, repeat: Infinity }}
-          />
-        </g>
-
-        {/* Bosch branding - minimal */}
-        <text x="140" y="320" textAnchor="middle" fill="#94a3b8" fontSize="7" fontWeight="600" letterSpacing="0.5">IP</text>
-
-        {/* Air vents - upper section (subtle horizontal lines) */}
-        <g opacity="0.6">
-          {[55, 65, 75, 85, 95, 105].map((y, i) => (
-            <motion.rect
-              key={`vent-upper-${i}`}
-              x="68" y={y} width="144" height="1.5" fill="#cbd5e1" rx="0.75"
-              animate={{ opacity: [0.4, 0.7, 0.4] }}
-              transition={{ duration: 2.5, delay: i * 0.15, repeat: Infinity }}
-            />
-          ))}
-        </g>
-
-        {/* Air flow visualization - animated arrows flowing down */}
-        <g opacity="0.5">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <motion.path
-              key={`flow-${i}`}
-              d={`M ${90 + i * 30} 125 L ${90 + i * 30} 155`}
-              stroke="#22c55e"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              fill="none"
-              animate={{
-                y: [0, 50, 0],
-                opacity: [0, 0.7, 0],
-              }}
-              transition={{ duration: 2, delay: i * 0.5, repeat: Infinity, ease: "easeInOut" }}
-            />
-          ))}
-        </g>
-
-        {/* Indicator lights - lower section */}
-        <g transform="translate(140, 220)">
-          {/* Power indicator */}
-          <circle cx="-20" cy="0" r="2.5" fill="#e5e7eb" stroke="#cbd5e1" strokeWidth="0.8" />
-          <motion.circle
-            cx="-20" cy="0" r="3.2" fill="none" stroke="#22c55e" strokeWidth="1"
-            animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.1, 0.8] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-          />
-
-          {/* WiFi indicator */}
-          <circle cx="0" cy="0" r="2.5" fill="#e5e7eb" stroke="#cbd5e1" strokeWidth="0.8" />
-          <motion.path
-            d="M -5 0 Q 0 -5 5 0" stroke="#3b82f6" strokeWidth="1.2" fill="none"
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: 0.3 }}
-          />
-
-          {/* Mode indicator */}
-          <circle cx="20" cy="0" r="2.5" fill="#e5e7eb" stroke="#cbd5e1" strokeWidth="0.8" />
-          <motion.circle
-            cx="20" cy="0" r="3.2" fill="none" stroke="#f59e0b" strokeWidth="1"
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: 0.6 }}
-          />
-        </g>
-
-        {/* Heat output indication - lower section */}
-        <g opacity="0.5">
-          {[175, 185, 195, 205, 215, 225].map((y, i) => (
-            <motion.rect
-              key={`output-${i}`}
-              x="68" y={y} width="144" height="1.5" fill="#22c55e" rx="0.75"
-              animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 2, delay: i * 0.12, repeat: Infinity }}
-            />
-          ))}
-        </g>
-
-        {/* Mode badge */}
-        <g transform="translate(140, 270)">
-          <rect x="-25" y="-8" width="50" height="16" rx="8" fill="#e5e7eb" stroke="#cbd5e1" strokeWidth="0.8" />
-          <text x="0" y="3" textAnchor="middle" fill="#64748b" fontSize="7" fontWeight="600">HEATING MODE</text>
-        </g>
-      </svg>
+      </motion.div>
     </div>
   )
 }

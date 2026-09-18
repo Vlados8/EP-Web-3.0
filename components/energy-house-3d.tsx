@@ -15,9 +15,9 @@ export function EnergyHouse3D() {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Ambient glow */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <motion.div
-          className="w-80 h-80 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-3xl"
+          className="w-80 h-80 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-3xl pointer-events-none"
           animate={{ 
             scale: isHovered ? 1.1 : 1,
             opacity: isHovered ? 0.8 : 0.5

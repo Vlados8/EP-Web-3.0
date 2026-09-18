@@ -2,10 +2,10 @@
 
 import React, { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion"
-import { ArrowDown, Play, Sparkles, CheckCircle2 } from "lucide-react"
+import { ArrowDown, Sparkles, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { EnergyHouse3D } from "@/components/energy-house-3d"
-import { VideoModal } from "@/components/video-modal"
+import { HeroCarousel } from "@/components/hero-carousel"
+import { HeroReviewsMarquee } from "@/components/hero-reviews-marquee"
 
 function FloatingParticle({ delay, duration, x, y, size }: { 
   delay: number
@@ -53,7 +53,6 @@ export function HeroSection() {
   const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-5, 5]), springConfig)
 
   const [mounted, setMounted] = useState(false)
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
 
   useEffect(() => {
     setMounted(true)
@@ -106,58 +105,62 @@ export function HeroSection() {
 
       {/* Main content */}
       <motion.div 
-        className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-2 gap-12 items-center"
+        className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-8 lg:pb-12 grid lg:grid-cols-2 gap-12 items-center"
       >
         {/* Text content */}
-        <div className="text-center lg:text-left order-2 lg:order-1 relative">
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        <div className="text-center lg:text-left order-1 relative z-10">
+          {/* 1. Überschrift */}
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass shadow-premium mb-10 border border-primary/30 bg-primary/5"
+            transition={{ duration: 0.8 }}
+            className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-[0.95] italic uppercase"
           >
-            <Sparkles className="w-3 h-3 text-primary animate-pulse" />
-            <span className="text-[10px] sm:text-xs font-black text-primary uppercase tracking-[0.2em]">
-              Region Norddeutschland / Bremen + 100 km
+            Photovoltaik & <br />
+            <span className="text-gradient-energy italic drop-shadow-[0_0_20px_rgba(34,197,94,0.35)]">
+              Wärmepumpen
+            </span>
+          </motion.h1>
+
+          {/* Region Subtitle with Asterisk */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass border border-primary/30 bg-primary/5 shadow-sm"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
+            <span className="text-xs sm:text-sm font-bold text-primary tracking-wide">
+              * Region Norddeutschland / Bremen + 100 km
             </span>
           </motion.div>
 
-          {/* Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tighter text-foreground leading-[0.95] text-balance italic uppercase"
-          >
-            Photovoltaik & <br />
-            Wärmepumpen – <br />
-            <span className="relative inline-block mt-2">
-              <span className="text-gradient-energy italic drop-shadow-[0_0_15px_rgba(34,197,94,0.3)]">
-                Ihre Energiezukunft
-              </span>
-              <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent rounded-full opacity-50 block lg:hidden" />
-            </span> <br />
-            <span className="text-foreground/90">beginnt hier</span>
-          </motion.h1>
+          {/* 2. Bild (Mobile Carousel: displayed between heading and text on mobile) */}
+          <div className="block lg:hidden my-8 w-full">
+            <HeroCarousel />
+          </div>
 
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
+          {/* 3. Überschrift / Promotional Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-8 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto lg:mx-0 text-pretty font-medium border-l-2 border-primary/20 pl-6 lg:border-l-0 lg:pl-0"
+            className="mt-6 sm:mt-8 max-w-xl mx-auto lg:mx-0"
           >
-            Wir bieten professionelle Installation von Photovoltaikanlagen und Wärmepumpen für Privat- und Gewerbekunden in Norddeutschland. 
-            Regionale Expertise trifft auf modernste Technik – für ein nachhaltiges Zuhause.
-          </motion.p>
+            <p className="text-base sm:text-lg text-foreground/90 font-medium leading-relaxed">
+              <strong className="font-black text-primary uppercase tracking-wide mr-1.5">
+                Förderbar:
+              </strong>{" "}
+              Sparen Sie Kosten und erzeugen Ihren eigenen Strom mit einer PV-Anlage und machen Sie sich unabhängig von Öl und Gas mit einer Wärmepumpe.
+            </p>
+          </motion.div>
 
           {/* CTA buttons */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-12 flex flex-col items-center lg:items-start gap-4"
+            className="mt-10 sm:mt-12 flex flex-col items-center lg:items-start gap-4"
           >
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start w-full">
               <Button 
@@ -188,23 +191,6 @@ export function HeroSection() {
                   />
                 </a>
               </Button>
-              
-              <Button 
-                variant="ghost"
-                size="lg"
-                onClick={() => setIsVideoModalOpen(true)}
-                className="rounded-full px-8 py-7 text-base font-bold group w-full sm:w-auto border border-foreground/10 hover:border-foreground/25 hover:bg-primary/5 cursor-pointer transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full glass flex items-center justify-center group-hover:bg-primary/20 transition-all border border-foreground/10 group-hover:scale-110 shadow-sm">
-                    <Play className="w-4 h-4 ml-0.5 fill-current text-primary" />
-                  </div>
-                  <div className="text-left">
-                    <span className="uppercase tracking-widest text-xs block font-black">System ansehen</span>
-                    <span className="text-[10px] text-muted-foreground font-medium block">Interaktive Simulation</span>
-                  </div>
-                </div>
-              </Button>
             </div>
 
             {/* Reassuring trust row */}
@@ -229,7 +215,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-20 grid grid-cols-3 gap-4 sm:gap-8"
+            className="mt-14 sm:mt-20 grid grid-cols-3 gap-4 sm:gap-8"
           >
             {[
               { value: "98%", label: "Effizienz", color: "text-primary" },
@@ -244,77 +230,24 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* 3D House */}
+        {/* Desktop Visual Carousel (hidden on mobile, shown on lg) */}
         <motion.div
-          className="relative h-[400px] sm:h-[500px] lg:h-[600px] order-1 lg:order-2"
-          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          className="hidden lg:block relative order-2 w-full z-20"
+          style={{ rotateX, rotateY }}
         >
-          <EnergyHouse3D />
-          
-          {/* Floating info cards */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="absolute top-1/4 -left-4 lg:left-0 glass rounded-2xl p-4 shadow-soft animate-float"
-            style={{ animationDelay: "0s" }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                <span className="text-lg">☀️</span>
-              </div>
-              <div>
-                <div className="text-sm font-medium">Solarertrag</div>
-                <div className="text-xs text-muted-foreground">12.4 kWh heute</div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="absolute bottom-1/4 -right-4 lg:right-0 glass rounded-2xl p-4 shadow-soft animate-float"
-            style={{ animationDelay: "2s" }}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
-                <span className="text-lg">🔋</span>
-              </div>
-              <div>
-                <div className="text-sm font-medium">Batterie</div>
-                <div className="text-xs text-muted-foreground">85% geladen</div>
-              </div>
-            </div>
-          </motion.div>
+          <HeroCarousel />
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
+      {/* Customer Reviews Marquee (Right below the hero content & image) */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        className="relative z-10 w-full mb-8 sm:mb-12"
       >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-xs text-muted-foreground">Scrollen zum Entdecken</span>
-          <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-2">
-            <motion.div
-              animate={{ y: [0, 12, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-1 h-2 rounded-full bg-primary"
-            />
-          </div>
-        </motion.div>
+        <HeroReviewsMarquee />
       </motion.div>
-
-      {/* Interactive System Video/Simulation Modal */}
-      <VideoModal isOpen={isVideoModalOpen} onClose={() => setIsVideoModalOpen(false)} />
     </motion.section>
   )
 }
