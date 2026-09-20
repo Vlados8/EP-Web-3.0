@@ -113,9 +113,9 @@ export function HeroReviewsMarquee() {
   return (
     <div className="relative w-full max-w-[1440px] mx-auto overflow-hidden py-3 sm:py-5">
       {/* Top Header bar with Trust Rating and Navigation Buttons */}
-      <div className="flex items-center justify-between px-6 mb-3 sm:mb-4">
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm font-bold text-foreground">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25">
+      <div className="flex items-center justify-between gap-2 px-4 sm:px-6 mb-3 sm:mb-4 w-full">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm font-bold text-foreground min-w-0">
+          <span className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/25 shrink-0">
             <span className="flex text-emerald-500">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="w-3 h-3 fill-emerald-500 text-emerald-500" />
@@ -124,13 +124,13 @@ export function HeroReviewsMarquee() {
             <span>4.9 / 5</span>
           </span>
           <span className="text-muted-foreground font-medium hidden sm:inline">•</span>
-          <span className="text-muted-foreground font-semibold text-xs sm:text-sm">
+          <span className="text-muted-foreground font-semibold text-[11px] sm:text-sm truncate">
             Echte Kundenbewertungen aus Bremen & Norddeutschland
           </span>
         </div>
 
         {/* Manual scroll buttons */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={() => handleManualScroll("left")}
             aria-label="Nach links scrollen"
@@ -151,13 +151,13 @@ export function HeroReviewsMarquee() {
       {/* Marquee Track Container */}
       <div className="relative w-full group overflow-hidden">
         {/* Left & Right gradient edge fades */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 sm:w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-10" />
 
         {/* Scrolling Strip */}
         <div
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide py-2 px-6 animate-marquee-right hover:[animation-play-state:paused]"
+          className="flex gap-4 overflow-x-auto scrollbar-hide py-2 px-4 sm:px-6 animate-marquee-right hover:[animation-play-state:paused]"
         >
           {marqueeItems.map((item, index) => {
             const isPV = item.category === "Photovoltaik"

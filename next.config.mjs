@@ -13,6 +13,11 @@ const nextConfig = {
         destination: '/unser-team',
         permanent: true,
       },
+      {
+        source: '/danke',
+        destination: '/vielen-dank',
+        permanent: false,
+      },
     ]
   },
 }

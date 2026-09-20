@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useRef, useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { Sun, Thermometer, ChevronRight, Zap, Home, Users, MapPin, Flame, Snowflake, HelpCircle, Check, ArrowRight, RefreshCw, ArrowLeft, LayoutGrid, ChevronLeft, ShieldCheck, AlertCircle, MessageCircle, Phone, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -592,6 +593,7 @@ const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://admin.empire
 const CRM_API_KEY = "ep_71089631cd09ba8d4fe00f726af56ed90aa23c5eb0988647" // Hardcoded for now as per template, ideally move to env if possible
 
 export function IntelligentCalculator() {
+  const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
@@ -830,9 +832,34 @@ export function IntelligentCalculator() {
           if ((window as any).dataLayer) {
             (window as any).dataLayer.push({ event: 'lead_form_submitted', category: currentCategory?.name })
           }
+
+          try {
+            sessionStorage.setItem("ep_last_inquiry", JSON.stringify({
+              name: contactInfo.name,
+              category: currentCategory?.name || "Photovoltaik & Wärmepumpe",
+              subcategory: currentSubcategory?.name || "",
+              zip: contactInfo.zip || answers[ZIP_QUESTION_ID]?.value || "",
+              email: contactInfo.email,
+              phone: contactInfo.phone,
+              date: new Date().toISOString()
+            }))
+          } catch (e) {
+            // ignore storage errors
+          }
         }
-        setSubmitStatus({ success: true, message: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Wir werden uns in Kürze bei Ihnen melden." })
+
+        const queryParams = new URLSearchParams()
+        if (contactInfo.name) queryParams.set("name", contactInfo.name.split(" ")[0])
+        if (currentCategory?.name) queryParams.set("service", currentCategory.name)
+        if (contactInfo.zip || answers[ZIP_QUESTION_ID]?.value) {
+          queryParams.set("zip", contactInfo.zip || answers[ZIP_QUESTION_ID]?.value || "")
+        }
+
+        setSubmitStatus({ success: true, message: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Sie werden weitergeleitet..." })
         setView("result")
+
+        // Smooth redirect to dedicated Thank You page
+        router.push(`/vielen-dank?${queryParams.toString()}`)
       } else {
         throw new Error(resData.message || "Fehler beim Senden der Anfrage")
       }

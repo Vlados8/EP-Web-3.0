@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="de" className={inter.variable}>
+    <html lang="de" className={`${inter.variable} overflow-x-clip`}>
       <head>
         {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
@@ -77,7 +77,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           `}
         </Script>
       </head>
-      <body className="font-sans antialiased overflow-x-hidden">
+      <body className="font-sans antialiased overflow-x-clip w-full min-w-0">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe

@@ -105,16 +105,16 @@ export function HeroSection() {
 
       {/* Main content */}
       <motion.div 
-        className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-8 lg:pb-12 grid lg:grid-cols-2 gap-12 items-center"
+        className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 pt-28 sm:pt-32 pb-8 lg:pb-12 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-w-0"
       >
         {/* Text content */}
-        <div className="text-center lg:text-left order-1 relative z-10">
+        <div className="text-center lg:text-left order-1 relative z-10 w-full min-w-0 max-w-full flex flex-col items-center lg:items-start">
           {/* 1. Überschrift */}
           <motion.h1
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tighter text-foreground leading-[0.95] italic uppercase"
+            className="text-3xl min-[380px]:text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight sm:tracking-tighter text-foreground leading-[0.98] sm:leading-[0.95] italic uppercase break-words w-full"
           >
             Photovoltaik & <br />
             <span className="text-gradient-energy italic drop-shadow-[0_0_20px_rgba(34,197,94,0.35)]">
@@ -127,16 +127,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-3 sm:mt-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass border border-primary/30 bg-primary/5 shadow-sm"
+            className="mt-3 sm:mt-4 inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full glass border border-primary/30 bg-primary/5 shadow-sm max-w-full"
           >
             <Sparkles className="w-3.5 h-3.5 text-primary shrink-0" />
-            <span className="text-xs sm:text-sm font-bold text-primary tracking-wide">
+            <span className="text-[11px] min-[380px]:text-xs sm:text-sm font-bold text-primary tracking-wide text-center">
               * Region Norddeutschland / Bremen + 100 km
             </span>
           </motion.div>
 
           {/* 2. Bild (Mobile Carousel: displayed between heading and text on mobile) */}
-          <div className="block lg:hidden my-8 w-full">
+          <div className="block lg:hidden my-6 sm:my-8 w-full max-w-full min-w-0 overflow-hidden">
             <HeroCarousel />
           </div>
 
@@ -145,9 +145,9 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mt-6 sm:mt-8 max-w-xl mx-auto lg:mx-0"
+            className="mt-5 sm:mt-8 max-w-xl mx-auto lg:mx-0 w-full text-center lg:text-left"
           >
-            <p className="text-base sm:text-lg text-foreground/90 font-medium leading-relaxed">
+            <p className="text-sm min-[380px]:text-base sm:text-lg text-foreground/90 font-medium leading-relaxed">
               <strong className="font-black text-primary uppercase tracking-wide mr-1.5">
                 Förderbar:
               </strong>{" "}
@@ -160,13 +160,13 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-10 sm:mt-12 flex flex-col items-center lg:items-start gap-4"
+            className="mt-8 sm:mt-12 flex flex-col items-center lg:items-start gap-4 w-full"
           >
             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start w-full">
               <Button 
                 asChild
                 size="lg"
-                className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-10 py-7 text-base font-black uppercase tracking-widest shadow-premium group w-full sm:w-auto"
+                className="relative overflow-hidden bg-foreground text-background hover:bg-foreground/90 rounded-full px-5 min-[380px]:px-8 sm:px-10 py-5 sm:py-7 text-sm min-[380px]:text-base font-black uppercase tracking-wider sm:tracking-widest shadow-premium group w-full sm:w-auto max-w-full"
               >
                 <a 
                   href="#calculator"
@@ -178,10 +178,11 @@ export function HeroSection() {
                       window.history.replaceState(null, "", "#calculator")
                     }
                   }}
+                  className="w-full flex items-center justify-center"
                 >
-                  <span className="relative z-10 flex items-center gap-2">
+                  <span className="relative z-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
                     <span>Kostenloses Angebot</span>
-                    <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full lowercase font-bold tracking-normal">in 2 Min.</span>
+                    <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full lowercase font-bold tracking-normal shrink-0">in 2 Min.</span>
                   </span>
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-r from-primary to-secondary pointer-events-none"
@@ -194,7 +195,7 @@ export function HeroSection() {
             </div>
 
             {/* Reassuring trust row */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-1.5 text-xs text-muted-foreground font-semibold pt-1">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-x-4 sm:gap-x-5 gap-y-1.5 text-[11px] sm:text-xs text-muted-foreground font-semibold pt-1 w-full text-center lg:text-left">
               <span className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />
                 100% kostenlos & unverbindlich
@@ -215,16 +216,16 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-14 sm:mt-20 grid grid-cols-3 gap-4 sm:gap-8"
+            className="mt-10 sm:mt-16 lg:mt-20 grid grid-cols-3 gap-2 sm:gap-6 lg:gap-8 w-full max-w-lg mx-auto lg:mx-0"
           >
             {[
               { value: "98%", label: "Effizienz", color: "text-primary" },
               { value: "1024+", label: "Kunden", color: "text-secondary" },
               { value: "25J", label: "Garantie", color: "text-accent" },
             ].map((stat, index) => (
-              <div key={index} className="text-center lg:text-left group cursor-default">
-                <div className={`text-2xl sm:text-4xl font-black tracking-tighter ${stat.color} drop-shadow-sm`}>{stat.value}</div>
-                <div className="text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] text-muted-foreground/60 mt-1 group-hover:text-foreground transition-colors">{stat.label}</div>
+              <div key={index} className="text-center lg:text-left group cursor-default min-w-0">
+                <div className={`text-xl min-[380px]:text-2xl sm:text-4xl font-black tracking-tighter ${stat.color} drop-shadow-sm`}>{stat.value}</div>
+                <div className="text-[9px] sm:text-xs font-black uppercase tracking-wider sm:tracking-[0.2em] text-muted-foreground/60 mt-1 group-hover:text-foreground transition-colors truncate">{stat.label}</div>
               </div>
             ))}
           </motion.div>
