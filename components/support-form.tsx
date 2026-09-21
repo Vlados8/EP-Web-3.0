@@ -69,7 +69,8 @@ export function SupportForm() {
           client_email: formData.client_email,
           client_phone: formData.client_phone,
           priority: formData.priority,
-          source_website: window.location.hostname
+          source_website: typeof window !== "undefined" ? window.location.hostname : "empire-premium.de",
+          utm_url: typeof window !== "undefined" ? window.location.href : ""
         })
       })
 

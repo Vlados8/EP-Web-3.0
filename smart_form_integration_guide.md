@@ -37,7 +37,8 @@ Submits the final lead data and form answers.
   "contact_email": "max@example.com",
   "contact_phone": "+49123456789",
   "location": "Bremen",
-  "source_website": "https://your-new-site.com", 
+  "source_website": "https://your-new-site.com",
+  "utm_url": "https://your-new-site.com/rechner?utm_source=google&utm_medium=cpc",
   "answers": [
     {
       "question_id": 10,
@@ -82,6 +83,7 @@ To ensure the admin panel knows where the lead came from, use `window.location.o
 const payload = {
     // ...
     source_website: typeof window !== "undefined" ? window.location.origin : "fallback-domain.de",
+    utm_url: typeof window !== "undefined" ? window.location.href : "",
     // ...
 };
 ```

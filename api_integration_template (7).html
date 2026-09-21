@@ -443,6 +443,7 @@
   "contact_name": "Max Mustermann",
   "contact_email": "max@beispiel.de",
   "source_website": "ihre-website.de",
+  "utm_url": "https://ihre-website.de/rechner?utm_source=google&utm_medium=cpc",
   "answers": [
     { "question_id": 1, "answer_value": "Ja" }
   ]
@@ -958,6 +959,7 @@
                 contact_phone: document.getElementById('contactPhone').value,
                 notes: document.getElementById('contactNotes').value,
                 source_website: window.location.hostname,
+                utm_url: window.location.href,
                 answers: Object.keys(state.answers).map(qId => ({
                     question_id: parseInt(qId),
                     answer_id: state.answers[qId].answerId,

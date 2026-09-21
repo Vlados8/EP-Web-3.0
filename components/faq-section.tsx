@@ -1,17 +1,45 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { ChevronDown, HelpCircle } from "lucide-react"
 
-const faqs = [
+interface FAQItem {
+  question: string
+  answer: React.ReactNode
+}
+
+const faqs: FAQItem[] = [
   {
     question: "Was kostet eine Photovoltaikanlage in Deutschland?",
-    answer: "Die Kosten für eine Photovoltaikanlage hängen von der Größe und Ausstattung ab. In der Regel liegen die Preise zwischen 8.000 € und 20.000 €. Eine individuelle Beratung hilft dabei, die optimale Lösung für Ihr Gebäude zu finden."
+    answer: (
+      <>
+        Die Kosten für eine Photovoltaikanlage hängen von der Größe und Ausstattung ab. In der Regel liegen die Preise zwischen 8.000 € und 20.000 €. Jetzt den{" "}
+        <Link
+          href="/#calculator"
+          className="text-primary font-bold underline decoration-primary/40 underline-offset-4 hover:decoration-primary hover:text-primary/90 transition-all"
+        >
+          genauen Preis für Ihr Haus ermitteln
+        </Link>{" "}
+        oder eine individuelle Beratung nutzen, um die optimale Lösung für Ihr Gebäude zu finden.
+      </>
+    )
   },
   {
     question: "Was kostet eine Wärmepumpe?",
-    answer: "Die Kosten für eine Wärmepumpe variieren je nach System und Gebäude. Durchschnittlich liegen sie zwischen 15.000 € und 35.000 € inklusive Installation. Durch staatliche Förderungen können die Kosten deutlich reduziert werden."
+    answer: (
+      <>
+        Die Kosten für eine Wärmepumpe variieren je nach System und Gebäude. Durchschnittlich liegen sie zwischen 15.000 € und 35.000 € inklusive Installation. Durch staatliche Förderungen können die Kosten deutlich reduziert werden. Jetzt den{" "}
+        <Link
+          href="/#calculator"
+          className="text-primary font-bold underline decoration-primary/40 underline-offset-4 hover:decoration-primary hover:text-primary/90 transition-all"
+        >
+          genauen Preis für Ihr Haus ermitteln
+        </Link>
+        .
+      </>
+    )
   },
   {
     question: "Lohnt sich eine Kombination aus Photovoltaik und Wärmepumpe?",

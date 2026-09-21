@@ -334,7 +334,7 @@ function ContactStep({
             }`}
           />
           <p className="text-[11px] text-slate-400 font-medium ml-1">
-            🔒 Kein Spam. Nur für eine kurze Rückfrage zur Erstellung Ihres Angebots.
+            🔒 Ihre Telefonnummer benötigen wir nur für evtl. Rückfragen. (keine Werbeanrufe)
           </p>
         </div>
       </div>
@@ -791,9 +791,60 @@ export function IntelligentCalculator() {
     }
   }
 
+  // Save UTM URL if present
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const search = window.location.search
+      if (search && (search.includes("utm_") || search.includes("gclid") || search.includes("fbclid"))) {
+        try {
+          sessionStorage.setItem("ep_utm_url", window.location.href)
+        } catch (e) {
+          // ignore
+        }
+      }
+    }
+  }, [])
+
   async function submitInquiry() {
     setSubmitting(true)
     setSubmitStatus(null)
+
+    // Build the queryParams for the Vielen Dank redirect URL (including name, service, zip and all UTM parameters)
+    const queryParams = new URLSearchParams()
+    if (typeof window !== "undefined" && window.location.search) {
+      const currentParams = new URLSearchParams(window.location.search)
+      currentParams.forEach((val, key) => {
+        queryParams.set(key, val)
+      })
+    } else if (typeof window !== "undefined") {
+      const storedUtm = sessionStorage.getItem("ep_utm_url")
+      if (storedUtm && storedUtm.includes("?")) {
+        const storedParams = new URLSearchParams(storedUtm.split("?")[1])
+        storedParams.forEach((val, key) => {
+          queryParams.set(key, val)
+        })
+      }
+    }
+
+    if (contactInfo.name) queryParams.set("name", contactInfo.name.split(" ")[0])
+    if (currentCategory?.name) queryParams.set("service", currentCategory.name)
+    if (contactInfo.zip || answers[ZIP_QUESTION_ID]?.value) {
+      queryParams.set("zip", contactInfo.zip || answers[ZIP_QUESTION_ID]?.value || "")
+    }
+
+    const origin = typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "https://empire-premium.de"
+    const rawRedirectUrl = `${origin}/vielen-dank?${queryParams.toString()}`
+
+    // Format URL 1-to-1 exactly as displayed in browser address bar (Wärmepumpe, Cyrillic, etc.)
+    const redirectUrl = rawRedirectUrl.replace(/(%[89A-F][0-9A-F])+/gi, (match) => {
+      try {
+        return decodeURIComponent(match)
+      } catch {
+        return match
+      }
+    })
 
     const payload = {
       title: "Website-Anfrage (Intelligenter Rechner)",
@@ -804,7 +855,8 @@ export function IntelligentCalculator() {
       contact_phone: contactInfo.phone,
       location: contactInfo.zip,
       notes: contactInfo.notes,
-      source_website: typeof window !== "undefined" ? window.location.hostname : "imperia-premium.de",
+      source_website: typeof window !== "undefined" ? window.location.hostname : "empire-premium.de",
+      utm_url: redirectUrl,
       answers: Object.entries(answers)
         .filter(([qId]) => parseInt(qId) > 0 && parseInt(qId) !== ZIP_QUESTION_ID)
         .map(([qId, ans]) => ({
@@ -841,18 +893,12 @@ export function IntelligentCalculator() {
               zip: contactInfo.zip || answers[ZIP_QUESTION_ID]?.value || "",
               email: contactInfo.email,
               phone: contactInfo.phone,
+              utm_url: redirectUrl,
               date: new Date().toISOString()
             }))
           } catch (e) {
             // ignore storage errors
           }
-        }
-
-        const queryParams = new URLSearchParams()
-        if (contactInfo.name) queryParams.set("name", contactInfo.name.split(" ")[0])
-        if (currentCategory?.name) queryParams.set("service", currentCategory.name)
-        if (contactInfo.zip || answers[ZIP_QUESTION_ID]?.value) {
-          queryParams.set("zip", contactInfo.zip || answers[ZIP_QUESTION_ID]?.value || "")
         }
 
         setSubmitStatus({ success: true, message: "Vielen Dank! Ihre Anfrage wurde erfolgreich übermittelt. Sie werden weitergeleitet..." })
@@ -927,27 +973,41 @@ export function IntelligentCalculator() {
               Online-Konfigurator
             </div>
             <h2 className="text-3xl md:text-5xl font-black text-[#0f172a] tracking-tight">
-              Ihr kostenloses Angebot in 2 Minuten
+              Ermitteln Sie den genauen Preis und erhalten ein unverbindliches Angebot
             </h2>
-            {/* Steps Guide */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto pt-2 text-left">
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-primary/30 shadow-sm">
-                <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-black flex items-center justify-center shrink-0">1</span>
-                <span className="text-xs sm:text-sm font-medium text-[#0f172a]">
-                  <strong className="font-bold text-primary">Schritt 1:</strong> Wählen Sie Photovoltaik oder Wärmepumpe
-                </span>
-              </div>
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm">
-                <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center shrink-0">2</span>
-                <span className="text-xs sm:text-sm font-medium text-slate-700">
-                  <strong className="font-bold text-slate-900">Schritt 2:</strong> Tragen Sie Ihre Wünsche & Angaben ein
-                </span>
-              </div>
-              <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/70 border border-slate-200/80 shadow-sm">
-                <span className="w-6 h-6 rounded-full bg-slate-200 text-slate-700 text-xs font-black flex items-center justify-center shrink-0">3</span>
-                <span className="text-xs sm:text-sm font-medium text-slate-700">
-                  <strong className="font-bold text-slate-900">Schritt 3:</strong> Erhalten Sie Ihr Angebot in nur 2 Minuten
-                </span>
+            {/* Steps Guide - Informative Process Overview (Text, not buttons) */}
+            <div className="max-w-4xl mx-auto pt-2 pb-1 select-none pointer-events-none cursor-default">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-5 text-xs sm:text-sm text-slate-600">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center shrink-0">
+                    1
+                  </span>
+                  <span>
+                    <strong className="font-semibold text-slate-900">Schritt 1:</strong> Photovoltaik oder Wärmepumpe wählen
+                  </span>
+                </div>
+
+                <ArrowRight className="hidden md:block w-4 h-4 text-slate-300 shrink-0" />
+
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">
+                    2
+                  </span>
+                  <span>
+                    <strong className="font-semibold text-slate-900">Schritt 2:</strong> Wünsche & Angaben eintragen
+                  </span>
+                </div>
+
+                <ArrowRight className="hidden md:block w-4 h-4 text-slate-300 shrink-0" />
+
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-slate-100 text-slate-500 text-xs font-bold flex items-center justify-center shrink-0">
+                    3
+                  </span>
+                  <span>
+                    <strong className="font-semibold text-slate-900">Schritt 3:</strong> Wir nennen Ihnen den genauen Preis, maßgeschneidert für Ihr Haus
+                  </span>
+                </div>
               </div>
             </div>
             {/* Trust Badges */}
@@ -1022,7 +1082,7 @@ export function IntelligentCalculator() {
                         <div
                           className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
                         >
-                          Angebot berechnen
+                          Preis berechnen
                           <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </div>
                       </motion.button>
@@ -1166,10 +1226,10 @@ export function IntelligentCalculator() {
                               <Check className="w-3.5 h-3.5" /> Fast am Ziel!
                             </div>
                             <h3 className="text-3xl font-black text-[#0f172a] mb-2">
-                              Wohin dürfen wir Ihr Angebot senden?
+                              Wohin möchten Sie Ihr Preis-Angebot erhalten?
                             </h3>
                             <p className="text-slate-500 font-medium text-sm">
-                              Ihre Konfiguration ist gespeichert. Wir berechnen Ihr maßgeschneidertes Festpreisangebot.
+                              Ihre Telefonnummer benötigen wir nur für evtl. Rückfragen. (keine Werbeanrufe)
                             </p>
                           </div>
 
@@ -1265,7 +1325,7 @@ export function IntelligentCalculator() {
                               ) : (
                                 <>
                                   <Lock className="w-4 h-4" />
-                                  <span>Unverbindliches Angebot anfordern</span>
+                                  <span>Preis unverbindlich berechnen lassen</span>
                                   <ArrowRight className="w-5 h-5" />
                                 </>
                               )}

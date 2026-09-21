@@ -30,7 +30,7 @@ export default function FAQPage() {
                 "name": "Was kostet eine Photovoltaikanlage in Deutschland?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Die Kosten für eine Photovoltaikanlage hängen von der Größe und Ausstattung ab. In der Regel liegen die Preise zwischen 8.000 € und 20.000 €. Eine individuelle Beratung hilft dabei, die optimale Lösung für Ihr Gebäude zu finden."
+                  "text": "Die Kosten für eine Photovoltaikanlage hängen von der Größe und Ausstattung ab. In der Regel liegen die Preise zwischen 8.000 € und 20.000 €. Jetzt den genauen Preis für Ihr Haus ermitteln oder eine individuelle Beratung nutzen, um die optimale Lösung für Ihr Gebäude zu finden."
                 }
               },
               {
@@ -38,7 +38,7 @@ export default function FAQPage() {
                 "name": "Was kostet eine Wärmepumpe?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Die Kosten für eine Wärmepumpe variieren je nach System und Gebäude. Durchschnittlich liegen sie zwischen 15.000 € und 35.000 € inklusive Installation. Durch staatliche Förderungen können die Kosten deutlich reduziert werden."
+                  "text": "Die Kosten für eine Wärmepumpe variieren je nach System und Gebäude. Durchschnittlich liegen sie zwischen 15.000 € und 35.000 € inklusive Installation. Durch staatliche Förderungen können die Kosten deutlich reduziert werden. Jetzt den genauen Preis für Ihr Haus ermitteln."
                 }
               },
               {
