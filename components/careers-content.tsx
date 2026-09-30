@@ -88,15 +88,10 @@ export function CareersContent() {
     const jobTitle = jobOpenings.find(j => j.id === selectedJobId)?.title || "Stellenausschreibung"
 
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_CRM_API_URL || "https://admin.empire-premium.de/api/v1"
-      const apiKey = process.env.NEXT_PUBLIC_CRM_API_KEY || ""
-      const companyToken = process.env.NEXT_PUBLIC_CRM_COMPANY_TOKEN || "d3ba48fd-35d4-466d-93c2-5b23ff3fcc44"
-
-      const response = await fetch(`${baseUrl}/bewerbungen/public/${companyToken}`, {
+      const response = await fetch("/api/careers", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           stelle: jobTitle,

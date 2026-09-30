@@ -589,9 +589,6 @@ function QuestionStep({
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-const CRM_API_URL = process.env.NEXT_PUBLIC_CRM_API_URL || "https://admin.empire-premium.de/api/v1"
-const CRM_API_KEY = "ep_71089631cd09ba8d4fe00f726af56ed90aa23c5eb0988647" // Hardcoded for now as per template, ideally move to env if possible
-
 export function IntelligentCalculator() {
   const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
@@ -610,13 +607,11 @@ export function IntelligentCalculator() {
   const [submitting, setSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ success: boolean, message: string } | null>(null)
 
-  // Initialization: Fetch categories
+  // Initialization: Fetch categories via server proxy
   React.useEffect(() => {
     async function fetchCategories() {
       try {
-        const response = await fetch(`${CRM_API_URL}/categories`, {
-          headers: { "x-api-key": CRM_API_KEY }
-        })
+        const response = await fetch("/api/categories")
         if (!response.ok) throw new Error("API connection failed")
         const json = await response.json()
         const fetched: ApiCategory[] = json.data?.categories || json.data || json
@@ -866,11 +861,10 @@ export function IntelligentCalculator() {
     }
 
     try {
-      const response = await fetch(`${CRM_API_URL}/inquiries`, {
+      const response = await fetch("/api/inquiries", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": CRM_API_KEY
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
       })

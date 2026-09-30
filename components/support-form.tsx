@@ -53,14 +53,10 @@ export function SupportForm() {
     setError(null)
     
     try {
-      const baseUrl = process.env.NEXT_PUBLIC_CRM_API_URL || "https://admin.empire-premium.de/api/v1"
-      const apiKey = process.env.NEXT_PUBLIC_CRM_API_KEY || ""
-
-      const response = await fetch(`${baseUrl}/support`, {
+      const response = await fetch("/api/support", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           subject: formData.subject,
