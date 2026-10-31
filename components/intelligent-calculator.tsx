@@ -1074,7 +1074,7 @@ export function IntelligentCalculator() {
                         </p>
 
                         <div
-                          className="w-full py-5 rounded-xl bg-[#f1f5f9] text-[#0f172a] font-bold text-lg group-hover:bg-primary group-hover:text-white transition-all duration-300 flex items-center justify-center gap-2 shadow-sm"
+                          className="w-full py-4 sm:py-5 rounded-xl bg-primary text-white font-bold text-base sm:text-lg shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all duration-300 flex items-center justify-center gap-2 group-hover:scale-[1.01]"
                         >
                           Preis berechnen
                           <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

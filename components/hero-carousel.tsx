@@ -17,11 +17,12 @@ export interface SlideItem {
 
 const SLIDES: SlideItem[] = [
   {
-    id: "3d-simulation",
-    type: "3d",
-    title: "Energie-Haus 3D",
-    subtitle: "Interaktives Gesamtsystem",
-    badge: "3D Simulation",
+    id: "pv-und-wp-komplett",
+    type: "image",
+    title: "Photovoltaik & Wärmepumpe",
+    subtitle: "Das smarte Gesamtsystem für Ihr Zuhause",
+    badge: "Komplettlösung",
+    src: "/pv_und_waermepumpe_komplett.jpg",
   },
   {
     id: "pv-installation",
@@ -38,6 +39,13 @@ const SLIDES: SlideItem[] = [
     subtitle: "Bis zu 70% staatliche Förderung",
     badge: "Heiztechnik",
     src: "/heat_pump_installation_bremen_1.png",
+  },
+  {
+    id: "3d-simulation",
+    type: "3d",
+    title: "Energie-Haus 3D",
+    subtitle: "Interaktives Gesamtsystem",
+    badge: "3D Simulation",
   },
   {
     id: "pv-roof",
@@ -178,7 +186,7 @@ export function HeroCarousel() {
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover object-center transform transition-transform duration-700 ease-out group-hover:scale-105"
-                  priority={currentIndex === 1}
+                  priority={currentIndex === 0}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
 

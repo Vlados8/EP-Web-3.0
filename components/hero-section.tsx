@@ -6,6 +6,7 @@ import { ArrowDown, Sparkles, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroCarousel } from "@/components/hero-carousel"
 import { HeroReviewsMarquee } from "@/components/hero-reviews-marquee"
+import { BrandLogos } from "@/components/brand-logos"
 
 function FloatingParticle({ delay, duration, x, y, size }: { 
   delay: number
@@ -136,8 +137,9 @@ export function HeroSection() {
           </motion.div>
 
           {/* 2. Bild (Mobile Carousel: displayed between heading and text on mobile) */}
-          <div className="block lg:hidden my-6 sm:my-8 w-full max-w-full min-w-0 overflow-hidden">
+          <div className="block lg:hidden my-6 sm:my-8 w-full max-w-full min-w-0 overflow-hidden space-y-3">
             <HeroCarousel />
+            <BrandLogos />
           </div>
 
           {/* 3. Überschrift / Promotional Text */}
@@ -181,7 +183,7 @@ export function HeroSection() {
                   className="w-full flex items-center justify-center"
                 >
                   <span className="relative z-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-                    <span>Kostenloses Angebot</span>
+                    <span>Jetzt Preis berechnen</span>
                     <span className="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full lowercase font-bold tracking-normal shrink-0">in 2 Min.</span>
                   </span>
                   <motion.div 
@@ -233,10 +235,11 @@ export function HeroSection() {
 
         {/* Desktop Visual Carousel (hidden on mobile, shown on lg) */}
         <motion.div
-          className="hidden lg:block relative order-2 w-full z-20"
+          className="hidden lg:block relative order-2 w-full z-20 space-y-4"
           style={{ rotateX, rotateY }}
         >
           <HeroCarousel />
+          <BrandLogos />
         </motion.div>
       </motion.div>
 

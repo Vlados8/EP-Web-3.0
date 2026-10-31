@@ -10,18 +10,33 @@ interface FAQItem {
   answer: React.ReactNode
 }
 
+function scrollToCalculator(e: React.MouseEvent) {
+  e.preventDefault()
+  if (typeof window !== "undefined") {
+    const el = document.getElementById("calculator")
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" })
+      window.history.replaceState(null, "", "#calculator")
+    } else {
+      window.location.href = "/#calculator"
+    }
+  }
+}
+
 const faqs: FAQItem[] = [
   {
     question: "Was kostet eine Photovoltaikanlage in Deutschland?",
     answer: (
       <>
         Die Kosten für eine Photovoltaikanlage hängen von der Größe und Ausstattung ab. In der Regel liegen die Preise zwischen 8.000 € und 20.000 €. Jetzt den{" "}
-        <Link
+        <a
           href="/#calculator"
-          className="text-primary font-bold underline decoration-primary/40 underline-offset-4 hover:decoration-primary hover:text-primary/90 transition-all"
+          onClick={scrollToCalculator}
+          className="inline-flex items-center gap-1 font-bold text-primary underline decoration-2 decoration-primary/50 underline-offset-4 hover:decoration-primary hover:text-primary/80 transition-all cursor-pointer"
         >
-          genauen Preis für Ihr Haus ermitteln
-        </Link>{" "}
+          <span>genauen Preis für Ihr Haus ermitteln</span>
+          <span aria-hidden="true">→</span>
+        </a>{" "}
         oder eine individuelle Beratung nutzen, um die optimale Lösung für Ihr Gebäude zu finden.
       </>
     )
@@ -31,12 +46,14 @@ const faqs: FAQItem[] = [
     answer: (
       <>
         Die Kosten für eine Wärmepumpe variieren je nach System und Gebäude. Durchschnittlich liegen sie zwischen 15.000 € und 35.000 € inklusive Installation. Durch staatliche Förderungen können die Kosten deutlich reduziert werden. Jetzt den{" "}
-        <Link
+        <a
           href="/#calculator"
-          className="text-primary font-bold underline decoration-primary/40 underline-offset-4 hover:decoration-primary hover:text-primary/90 transition-all"
+          onClick={scrollToCalculator}
+          className="inline-flex items-center gap-1 font-bold text-primary underline decoration-2 decoration-primary/50 underline-offset-4 hover:decoration-primary hover:text-primary/80 transition-all cursor-pointer"
         >
-          genauen Preis für Ihr Haus ermitteln
-        </Link>
+          <span>genauen Preis für Ihr Haus ermitteln</span>
+          <span aria-hidden="true">→</span>
+        </a>
         .
       </>
     )
